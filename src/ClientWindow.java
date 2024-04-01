@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.SecureRandom;
@@ -18,6 +20,7 @@ public class ClientWindow implements ActionListener
 	private TimerTask clock;
 	
 	private JFrame window;
+	private JFrame username;
 	
 	private static SecureRandom random = new SecureRandom();
 	
@@ -25,7 +28,20 @@ public class ClientWindow implements ActionListener
 	
 	public ClientWindow()
 	{
-		JOptionPane.showMessageDialog(window, "This is a trivia game");
+		JOptionPane.showMessageDialog(window, "Enter A username to start");
+		
+		username = new JFrame("Username");
+		username.setLayout(new FlowLayout());
+		username.setBounds(10, 5, 250, 250);
+		JTextField user = new JTextField();
+		user.setPreferredSize(new Dimension(250, 40));
+
+		JButton enter = new JButton("Submit");
+
+		username.add(user);
+		username.add(enter);
+		username.pack();
+		username.setVisible(true);
 		
 		window = new JFrame("Trivia");
 		question = new JLabel("Q1. This is a sample question"); // represents the question
