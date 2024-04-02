@@ -7,19 +7,16 @@ import java.security.SecureRandom;
 import java.util.TimerTask;
 import java.util.Timer;
 import javax.swing.*;
-
 public class ClientWindow implements ActionListener
 {
 	private JButton poll;
 	private JButton submit;
-	private JButton enter;
 	private JRadioButton options[];
 	private ButtonGroup optionGroup;
 	private JLabel question;
 	private JLabel timer;
 	private JLabel score;
 	private TimerTask clock;
-	private JTextField user;
 	
 	private JFrame window;
 	private JFrame username;
@@ -37,22 +34,17 @@ public class ClientWindow implements ActionListener
 		username.setBounds(10, 5, 250, 250);
 		JTextField user = new JTextField();
 		user.setPreferredSize(new Dimension(250, 40));
-		username.setLocationRelativeTo(null);
-
-		JButton enter = new JButton("Enter");
+		JButton enter = new JButton("Submit");
 		enter.addActionListener(e -> System.out.println(user.getText()));
-
 		username.add(user);
 		username.add(enter);
 		username.pack();
 		username.setVisible(true);
-		//window.setVisible(false);
 		
 		window = new JFrame("Trivia");
 		question = new JLabel("Q1. This is a sample question"); // represents the question
 		window.add(question);
-		window.setLocationRelativeTo(null);
-		question.setBounds(10, 5, 350, 100);;
+		question.setBounds(10, 5, 350, 100);
 		
 		options = new JRadioButton[4];
 		optionGroup = new ButtonGroup();
@@ -65,7 +57,6 @@ public class ClientWindow implements ActionListener
 			window.add(options[index]);
 			optionGroup.add(options[index]);
 		}
-
 		timer = new JLabel("TIMER");  // represents the countdown shown on the window
 		timer.setBounds(250, 250, 100, 20);
 		clock = new TimerCode(30);  // represents clocked task that should run after X seconds
@@ -77,7 +68,6 @@ public class ClientWindow implements ActionListener
 		score = new JLabel("SCORE"); // represents the score
 		score.setBounds(50, 250, 100, 20);
 		window.add(score);
-
 		poll = new JButton("Poll");  // button that use clicks/ like a buzzer
 		poll.setBounds(10, 300, 100, 20);
 		poll.addActionListener(this);  // calls actionPerformed of this class
@@ -90,13 +80,12 @@ public class ClientWindow implements ActionListener
 		
 		
 		window.setSize(400,400);
-		window.setBounds(50, 50, 800, 800);
+		window.setBounds(50, 50, 400, 400);
 		window.setLayout(null);
-		
+		window.setVisible(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 	}
-
 	// this method is called when you check/uncheck any radio button
 	// this method is called when you press either of the buttons- submit/poll
 	@Override
@@ -106,11 +95,6 @@ public class ClientWindow implements ActionListener
 		
 		// input refers to the radio button you selected or button you clicked
 		String input = e.getActionCommand();  
-		if (input == "Enter"){
-			window.setVisible(true);
-			username.setVisible(false);
-		}
-
 		switch(input)
 		{
 			case "Option 1":	// Your code here
@@ -129,10 +113,8 @@ public class ClientWindow implements ActionListener
 								System.out.println("Incorrect Option");
 		}
 
-
-
-
 		// test code below to demo enable/disable components
+		// DELETE THE CODE BELOW FROM HERE***
 		/*// DELETE THE CODE BELOW FROM HERE***
 		if(poll.isEnabled())
 		{
@@ -145,16 +127,16 @@ public class ClientWindow implements ActionListener
 			submit.setEnabled(false);
 		}
 		
-		// question.setText("Q2. This is another test problem " + random.nextInt());
+		question.setText("Q2. This is another test problem " + random.nextInt());
 		
 		// you can also enable disable radio buttons
 		options[random.nextInt(4)].setEnabled(false);
 		options[random.nextInt(4)].setEnabled(true);
 		// TILL HERE ***
 		*/
-		
+
 	}
-	
+
 	// this class is responsible for running the timer on the window
 	public class TimerCode extends TimerTask
 	{
