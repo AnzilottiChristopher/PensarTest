@@ -12,12 +12,14 @@ public class ClientWindow implements ActionListener
 {
 	private JButton poll;
 	private JButton submit;
+	private JButton enter;
 	private JRadioButton options[];
 	private ButtonGroup optionGroup;
 	private JLabel question;
 	private JLabel timer;
 	private JLabel score;
 	private TimerTask clock;
+	private JTextField user;
 	
 	private JFrame window;
 	private JFrame username;
@@ -35,13 +37,16 @@ public class ClientWindow implements ActionListener
 		username.setBounds(10, 5, 250, 250);
 		JTextField user = new JTextField();
 		user.setPreferredSize(new Dimension(250, 40));
+		username.setLocationRelativeTo(null);
 
-		JButton enter = new JButton("Submit");
+		JButton enter = new JButton("Enter");
+		enter.addActionListener(this);
 
 		username.add(user);
 		username.add(enter);
 		username.pack();
 		username.setVisible(true);
+		//window.setVisible(false);
 		
 		window = new JFrame("Trivia");
 		question = new JLabel("Q1. This is a sample question"); // represents the question
@@ -120,24 +125,23 @@ public class ClientWindow implements ActionListener
 		
 		// test code below to demo enable/disable components
 		// DELETE THE CODE BELOW FROM HERE***
-		if(poll.isEnabled())
-		{
-			poll.setEnabled(false);
-			submit.setEnabled(true);
-		}
-		else
-		{
-			poll.setEnabled(true);
-			submit.setEnabled(false);
-		}
+		// if(poll.isEnabled())
+		// {
+		// 	poll.setEnabled(false);
+		// 	submit.setEnabled(true);
+		// }
+		// else
+		// {
+		// 	poll.setEnabled(true);
+		// 	submit.setEnabled(false);
+		// }
 		
-		question.setText("Q2. This is another test problem " + random.nextInt());
+		// question.setText("Q2. This is another test problem " + random.nextInt());
 		
-		// you can also enable disable radio buttons
-		options[random.nextInt(4)].setEnabled(false);
-		options[random.nextInt(4)].setEnabled(true);
-		// TILL HERE ***
-		
+		// // you can also enable disable radio buttons
+		// options[random.nextInt(4)].setEnabled(false);
+		// options[random.nextInt(4)].setEnabled(true);
+		// // TILL HERE ***
 	}
 	
 	// this class is responsible for running the timer on the window
