@@ -41,6 +41,9 @@ public class ClientWindow implements ActionListener
 
 		JButton enter = new JButton("Enter");
 		enter.addActionListener(this);
+		if (enter.isEnabled()){
+			System.out.println(user.getText());
+		}
 
 		username.add(user);
 		username.add(enter);
@@ -123,6 +126,10 @@ public class ClientWindow implements ActionListener
 								System.out.println("Incorrect Option");
 		}
 		
+		if (e.getSource() == enter){
+			System.out.println(user.getText());
+		}
+
 		// test code below to demo enable/disable components
 		// DELETE THE CODE BELOW FROM HERE***
 		// if(poll.isEnabled())
@@ -144,6 +151,8 @@ public class ClientWindow implements ActionListener
 		// // TILL HERE ***
 	}
 	
+
+
 	// this class is responsible for running the timer on the window
 	public class TimerCode extends TimerTask
 	{
