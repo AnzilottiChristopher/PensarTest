@@ -119,7 +119,7 @@ public class ClientWindow implements ActionListener
 		}
 		
 		// test code below to demo enable/disable components
-		// DELETE THE CODE BELOW FROM HERE***
+		/*// DELETE THE CODE BELOW FROM HERE***
 		if(poll.isEnabled())
 		{
 			poll.setEnabled(false);
@@ -137,6 +137,7 @@ public class ClientWindow implements ActionListener
 		options[random.nextInt(4)].setEnabled(false);
 		options[random.nextInt(4)].setEnabled(true);
 		// TILL HERE ***
+		*/
 		
 	}
 	
