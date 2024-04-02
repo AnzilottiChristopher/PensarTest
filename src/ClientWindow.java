@@ -41,9 +41,6 @@ public class ClientWindow implements ActionListener
 
 		JButton enter = new JButton("Enter");
 		enter.addActionListener(this);
-		if (enter.isEnabled()){
-			System.out.println(user.getText());
-		}
 
 		username.add(user);
 		username.add(enter);
@@ -54,6 +51,7 @@ public class ClientWindow implements ActionListener
 		window = new JFrame("Trivia");
 		question = new JLabel("Q1. This is a sample question"); // represents the question
 		window.add(question);
+		window.setLocationRelativeTo(null);
 		question.setBounds(10, 5, 350, 100);;
 		
 		options = new JRadioButton[4];
@@ -92,9 +90,9 @@ public class ClientWindow implements ActionListener
 		
 		
 		window.setSize(400,400);
-		window.setBounds(50, 50, 400, 400);
+		window.setBounds(50, 50, 800, 800);
 		window.setLayout(null);
-		window.setVisible(true);
+		
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 	}
@@ -105,9 +103,15 @@ public class ClientWindow implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		System.out.println("You clicked " + e.getActionCommand());
+
 		
 		// input refers to the radio button you selected or button you clicked
 		String input = e.getActionCommand();  
+		if (input == "Enter"){
+			window.setVisible(true);
+			username.setVisible(false);
+		}
+
 		switch(input)
 		{
 			case "Option 1":	// Your code here
@@ -131,28 +135,28 @@ public class ClientWindow implements ActionListener
 		}
 
 		// test code below to demo enable/disable components
-		// DELETE THE CODE BELOW FROM HERE***
-		// if(poll.isEnabled())
-		// {
-		// 	poll.setEnabled(false);
-		// 	submit.setEnabled(true);
-		// }
-		// else
-		// {
-		// 	poll.setEnabled(true);
-		// 	submit.setEnabled(false);
-		// }
+		/*// DELETE THE CODE BELOW FROM HERE***
+		if(poll.isEnabled())
+		{
+			poll.setEnabled(false);
+			submit.setEnabled(true);
+		}
+		else
+		{
+			poll.setEnabled(true);
+			submit.setEnabled(false);
+		}
 		
 		// question.setText("Q2. This is another test problem " + random.nextInt());
 		
-		// // you can also enable disable radio buttons
-		// options[random.nextInt(4)].setEnabled(false);
-		// options[random.nextInt(4)].setEnabled(true);
-		// // TILL HERE ***
+		// you can also enable disable radio buttons
+		options[random.nextInt(4)].setEnabled(false);
+		options[random.nextInt(4)].setEnabled(true);
+		// TILL HERE ***
+		*/
+		
 	}
 	
-
-
 	// this class is responsible for running the timer on the window
 	public class TimerCode extends TimerTask
 	{
