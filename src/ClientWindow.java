@@ -11,12 +11,14 @@ public class ClientWindow implements ActionListener
 {
 	private JButton poll;
 	private JButton submit;
+	private JButton enter;
 	private JRadioButton options[];
 	private ButtonGroup optionGroup;
 	private JLabel question;
 	private JLabel timer;
 	private JLabel score;
 	private TimerTask clock;
+	private JTextField user;
 	
 	private JFrame window;
 	private JFrame username;
@@ -34,17 +36,23 @@ public class ClientWindow implements ActionListener
 		username.setBounds(10, 5, 250, 250);
 		JTextField user = new JTextField();
 		user.setPreferredSize(new Dimension(250, 40));
-		JButton enter = new JButton("Submit");
-		enter.addActionListener(e -> System.out.println(user.getText()));
+		username.setLocationRelativeTo(null);
+
+		JButton enter = new JButton("Enter");
+		//enter.addActionListener(e -> System.out.println(user.getText()));
+		enter.addActionListener(this);
+
 		username.add(user);
 		username.add(enter);
 		username.pack();
 		username.setVisible(true);
+		//window.setVisible(false);
 		
 		window = new JFrame("Trivia");
 		question = new JLabel("Q1. This is a sample question"); // represents the question
 		window.add(question);
-		question.setBounds(10, 5, 350, 100);
+		window.setLocationRelativeTo(null);
+		question.setBounds(10, 5, 350, 100);;
 		
 		options = new JRadioButton[4];
 		optionGroup = new ButtonGroup();
@@ -80,9 +88,9 @@ public class ClientWindow implements ActionListener
 		
 		
 		window.setSize(400,400);
-		window.setBounds(50, 50, 400, 400);
+		window.setBounds(50, 50, 800, 800);
 		window.setLayout(null);
-		window.setVisible(true);
+		
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 	}
@@ -92,9 +100,13 @@ public class ClientWindow implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		System.out.println("You clicked " + e.getActionCommand());
-		
+
 		// input refers to the radio button you selected or button you clicked
 		String input = e.getActionCommand();  
+		if (input == "Enter"){
+			window.setVisible(true);
+			username.setVisible(false);
+		}
 		switch(input)
 		{
 			case "Option 1":	// Your code here
@@ -113,8 +125,10 @@ public class ClientWindow implements ActionListener
 								System.out.println("Incorrect Option");
 		}
 
+
+
+
 		// test code below to demo enable/disable components
-		// DELETE THE CODE BELOW FROM HERE***
 		/*// DELETE THE CODE BELOW FROM HERE***
 		if(poll.isEnabled())
 		{
@@ -127,16 +141,16 @@ public class ClientWindow implements ActionListener
 			submit.setEnabled(false);
 		}
 		
-		question.setText("Q2. This is another test problem " + random.nextInt());
+		// question.setText("Q2. This is another test problem " + random.nextInt());
 		
 		// you can also enable disable radio buttons
 		options[random.nextInt(4)].setEnabled(false);
 		options[random.nextInt(4)].setEnabled(true);
 		// TILL HERE ***
 		*/
-
+		
 	}
-
+	
 	// this class is responsible for running the timer on the window
 	public class TimerCode extends TimerTask
 	{
