@@ -40,7 +40,7 @@ public class ClientWindow implements ActionListener
 		username.setLocationRelativeTo(null);
 
 		JButton enter = new JButton("Enter");
-		enter.addActionListener(this);
+		enter.addActionListener(e -> System.out.println(user.getText()));
 
 		username.add(user);
 		username.add(enter);
@@ -103,7 +103,6 @@ public class ClientWindow implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		System.out.println("You clicked " + e.getActionCommand());
-
 		
 		// input refers to the radio button you selected or button you clicked
 		String input = e.getActionCommand();  
@@ -129,10 +128,9 @@ public class ClientWindow implements ActionListener
 			default:
 								System.out.println("Incorrect Option");
 		}
-		
-		if (e.getSource() == enter){
-			System.out.println(user.getText());
-		}
+
+
+
 
 		// test code below to demo enable/disable components
 		/*// DELETE THE CODE BELOW FROM HERE***
