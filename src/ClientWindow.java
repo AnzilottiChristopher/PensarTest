@@ -93,7 +93,12 @@ public class ClientWindow implements ActionListener
 
 		poll = new JButton("Poll");  // button that use clicks/ like a buzzer
 		poll.setBounds(10, 300, 100, 20);
-		poll.addActionListener(this);  // calls actionPerformed of this class
+		poll.addActionListener(new ActionListener() { // calls actionPerformed of this class
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                client.sendUsernameUDP(); // When the button is clicked, send username over UDP
+            }
+        });
 		window.add(poll);
 		
 		submit = new JButton("Submit");  // button to submit their answer
