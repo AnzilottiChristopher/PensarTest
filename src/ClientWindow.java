@@ -96,7 +96,7 @@ public class ClientWindow implements ActionListener
 		poll.addActionListener(new ActionListener() { // calls actionPerformed of this class
             @Override
             public void actionPerformed(ActionEvent e) {
-                client.sendUsernameUDP(); // When the button is clicked, send username over UDP
+                client.sendUsername(); // When the button is clicked, send username over UDP
             }
         });
 		window.add(poll);

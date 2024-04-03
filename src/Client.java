@@ -44,7 +44,7 @@ public class Client
         }
     }
 
-     public void sendUsernameUDP() {
+     public void sendUsername() {
         try {
             InetAddress serverAddress = socket.getInetAddress(); 
             int serverPort = 5000;
