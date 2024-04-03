@@ -22,14 +22,14 @@ public class ClientHandler implements Runnable
 
     //Basic Information
     private String username;
-    private static Queue<String> queue = new LinkedList<>();
 
 
-    public ClientHandler(Socket clientSocket)
+    public ClientHandler(Socket clientSocket, int portUDP)
     {
         this.clientSocket = clientSocket;
 
-        UDPhandler handler = new UDPhandler();
+
+        UDPhandler handler = new UDPhandler(portUDP);
         Thread handlerThread = new Thread(handler);
         handlerThread.start();
 
