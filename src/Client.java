@@ -1,7 +1,9 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -17,6 +19,7 @@ public class Client
     private byte[] buffer = new byte[256];
 
     //Client Data
+    private String userName;
 
     public Client()
     {
@@ -40,4 +43,17 @@ public class Client
             throw new RuntimeException(e);
         }
     }
+
+     public void sendUsername() {
+        try {
+            InetAddress serverAddress = socket.getInetAddress(); 
+            int serverPort = 5000;
+            byte[] data = userName.getBytes();
+            DatagramPacket packet = new DatagramPacket(data, data.length, serverAddress, serverPort);
+            buzzer.send(packet);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }

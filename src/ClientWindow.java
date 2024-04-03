@@ -19,11 +19,13 @@ public class ClientWindow implements ActionListener
 	private JLabel score;
 	private TimerTask clock;
 	private JTextField user;
+	private JLabel scoreText;
 	
 	private JFrame window;
 	private JFrame username;
 
 	private String name;
+	private int scoreNumber;
 	
 	private static SecureRandom random = new SecureRandom();
 	
@@ -83,9 +85,20 @@ public class ClientWindow implements ActionListener
 		score = new JLabel("SCORE"); // represents the score
 		score.setBounds(50, 250, 100, 20);
 		window.add(score);
+		scoreNumber = 0;
+		scoreText = new JLabel("0");
+		scoreText.setBounds(100, 250, 100, 20);
+		scoreText.setText(scoreNumber + "");
+		window.add(scoreText);
+
 		poll = new JButton("Poll");  // button that use clicks/ like a buzzer
 		poll.setBounds(10, 300, 100, 20);
-		poll.addActionListener(this);  // calls actionPerformed of this class
+		poll.addActionListener(new ActionListener() { // calls actionPerformed of this class
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                client.sendUsername(); // When the button is clicked, send username over UDP
+            }
+        });
 		window.add(poll);
 		
 		submit = new JButton("Submit");  // button to submit their answer
@@ -129,6 +142,8 @@ public class ClientWindow implements ActionListener
 			case "Poll":		// Your code here
 								break;
 			case "Submit":		// Your code here
+								break;
+			case "Enter":
 								break;
 			default:
 								System.out.println("Incorrect Option");
