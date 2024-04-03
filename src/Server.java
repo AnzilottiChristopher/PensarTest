@@ -8,7 +8,7 @@ public class Server implements Runnable
 {
     private ServerSocket socket;
     private int portNum;
-    private GameState state;
+    private static GameState state;
 
     public Server(int portNum)
     {
@@ -51,6 +51,11 @@ public class Server implements Runnable
         {
             throw new RuntimeException(e);
         }
+    }
+
+    public static GameState returnState()
+    {
+        return Server.state;
     }
 
     public static void main(String[] args)
