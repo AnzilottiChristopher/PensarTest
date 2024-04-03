@@ -45,7 +45,7 @@ public class ClientWindow implements ActionListener
 		enter.addActionListener(e -> System.out.println(user.getText()));
 		enter.addActionListener(this);
 		name = user.getText();
-
+		
 
 		username.add(user);
 		username.add(enter);
@@ -56,7 +56,6 @@ public class ClientWindow implements ActionListener
 		window = new JFrame("Trivia");
 		question = new JLabel("Q1. This is a sample question"); // represents the question
 		window.add(question);
-		window.setLocationRelativeTo(null);
 		question.setBounds(10, 5, 350, 100);;
 		
 		options = new JRadioButton[4];
@@ -93,8 +92,9 @@ public class ClientWindow implements ActionListener
 		
 		
 		window.setSize(400,400);
-		window.setBounds(50, 50, 800, 800);
+		window.setBounds(50, 50, 400, 400);
 		window.setLayout(null);
+		window.setLocationRelativeTo(null);
 		
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
