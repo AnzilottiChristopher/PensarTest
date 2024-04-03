@@ -22,11 +22,14 @@ public class ClientWindow implements ActionListener
 	
 	private JFrame window;
 	private JFrame username;
+
+	private String name;
 	
 	private static SecureRandom random = new SecureRandom();
 	
-	// write setters and getters as you need
-	
+	public JTextField getUser() {
+		return user;
+	}
 	public ClientWindow()
 	{
 		JOptionPane.showMessageDialog(window, "Enter A username to start");
@@ -39,8 +42,10 @@ public class ClientWindow implements ActionListener
 		username.setLocationRelativeTo(null);
 
 		JButton enter = new JButton("Enter");
-		//enter.addActionListener(e -> System.out.println(user.getText()));
+		enter.addActionListener(e -> System.out.println(user.getText()));
 		enter.addActionListener(this);
+		name = user.getText();
+
 
 		username.add(user);
 		username.add(enter);
@@ -107,6 +112,7 @@ public class ClientWindow implements ActionListener
 			window.setVisible(true);
 			username.setVisible(false);
 		}
+
 		switch(input)
 		{
 			case "Option 1":	// Your code here
