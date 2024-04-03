@@ -22,7 +22,7 @@ public class Client
     {
         try
         {
-            socket = new Socket("10.111.112.215", 5000);
+            socket = new Socket("", 5000);
             System.out.println("Connected");
 
             //Initialize TCP Input Outputs
