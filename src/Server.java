@@ -52,4 +52,11 @@ public class Server implements Runnable
             throw new RuntimeException(e);
         }
     }
+
+    public static void main(String[] args)
+    {
+        Server server = new Server(5000);
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        executorService.execute(server);
+    }
 }

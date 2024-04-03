@@ -32,6 +32,9 @@ public class ClientWindow implements ActionListener
 	}
 	public ClientWindow()
 	{
+		Client client = new Client();
+
+
 		JOptionPane.showMessageDialog(window, "Enter A username to start");
 		
 		username = new JFrame("Username");
@@ -189,3 +192,4 @@ public class ClientWindow implements ActionListener
 	}
 	
 }
+
