@@ -123,13 +123,17 @@ public class Client implements Runnable
             try
             {
                 //Receiving ID
-                clientID = input.readUTF();
+                //System.out.println("here again");
+                if (clientID == null)
+                {
+                    clientID = input.readUTF();
+                }
 
                 //System.out.println("right before");
                 question = (String[]) questionInput.readObject();
+                //System.out.println(question[0]);
                 change = true;
 
-                //System.out.println(question[0]);
                 //System.out.println("Got it");
                 System.out.println(change);
 
