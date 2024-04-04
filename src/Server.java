@@ -24,6 +24,8 @@ public class Server implements Runnable
 
     private List<ClientHandler> clientHandlers;
 
+    private static final String KILL_MSG = "Kill Switch";
+
     public Server(int portNum)
     {
         this.portNum = portNum;
@@ -111,6 +113,21 @@ public class Server implements Runnable
             clientIDs.add(handler.getClientID());
         }
         return clientIDs;
+    }
+
+     public void sendKillSwitchMessage(String clientID) {
+        for (ClientHandler handler : clientHandlers) {
+            if (handler.getClientID().equals(clientID)) {
+                handler.sendKillSwitchMessage();
+                break;
+            }
+        }
+    }
+
+    public void sendKillSwitchMessageToAll() {
+        for (ClientHandler handler : clientHandlers) {
+            handler.sendKillSwitchMessage();
+        }
     }
 
     public static int returnQuestionNumber()
