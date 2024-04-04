@@ -30,6 +30,8 @@ public class ClientWindow implements ActionListener
 	
 	private static SecureRandom random = new SecureRandom();
 
+	private String[] option = new String[4];
+
 	Client client;
 	
 	public JTextField getUser() {
@@ -139,40 +141,67 @@ public class ClientWindow implements ActionListener
 		}
 
 
-		switch(input)
+		if (input.equalsIgnoreCase(option[0]))
 		{
-			case "Option 1":	// Your code here
-				//clientHandler.setQuestionProgress(GameState.ANSWERING);
-				guess = 1;
-				//client.submitButton(guess, false);
-								break;
-			case "Option 2":	// Your code here
-				//clientHandler.setQuestionProgress(GameState.ANSWERING);
-				guess = 2;
-				//client.submitButton(guess, false);
-								break;
-			case "Option 3":	// Your code here
-				//clientHandler.setQuestionProgress(GameState.ANSWERING);
-				guess = 3;
-				//client.submitButton(guess, false);
-								break;
-			case "Option 4":	// Your code here
-				//clientHandler.setQuestionProgress(GameState.ANSWERING);
-				guess = 4;
-				//client.submitButton(guess, false);
-								break;
-			case "Poll":		// Your code here
-				client.sendUsername();
-								break;
-			case "Submit":		// Your code here
-				//clientHandler.setQuestionProgress(GameState.SENDING);
-				client.submitButton(guess, true);
-								break;
-			case "Enter":
-								break;
-			default:
-								System.out.println("Incorrect Option");
+			guess = 1;
+		} else if (input.equalsIgnoreCase(option[1]))
+		{
+			guess = 2;
+		} else if (input.equalsIgnoreCase(option[2]))
+		{
+			guess = 3;
+		} else if (input.equalsIgnoreCase(option[3]))
+		{
+			guess = 4;
+		} else if (input.equalsIgnoreCase("Poll"))
+		{
+			client.sendUsername();
+		} else if (input.equalsIgnoreCase("Submit"))
+		{
+			client.submitButton(guess, true);
+		} else if (input.equalsIgnoreCase("Enter"))
+		{
+
+		} else
+		{
+			System.out.println("Incorrect Option");
 		}
+
+
+//		switch(input)
+//		{
+//			case "Option 1":	// Your code here
+//				//clientHandler.setQuestionProgress(GameState.ANSWERING);
+//				guess = 1;
+//				//client.submitButton(guess, false);
+//								break;
+//			case "Option 2":	// Your code here
+//				//clientHandler.setQuestionProgress(GameState.ANSWERING);
+//				guess = 2;
+//				//client.submitButton(guess, false);
+//								break;
+//			case "Option 3":	// Your code here
+//				//clientHandler.setQuestionProgress(GameState.ANSWERING);
+//				guess = 3;
+//				//client.submitButton(guess, false);
+//								break;
+//			case "Option 4":	// Your code here
+//				//clientHandler.setQuestionProgress(GameState.ANSWERING);
+//				guess = 4;
+//				//client.submitButton(guess, false);
+//								break;
+//			case "Poll":		// Your code here
+//				client.sendUsername();
+//								break;
+//			case "Submit":		// Your code here
+//				//clientHandler.setQuestionProgress(GameState.SENDING);
+//				client.submitButton(guess, true);
+//								break;
+//			case "Enter":
+//								break;
+//			default:
+//								System.out.println("Incorrect Option");
+//		}
 
 
 
@@ -239,5 +268,12 @@ public class ClientWindow implements ActionListener
 		options[1].setText(option2);
 		options[2].setText(option3);
 		options[3].setText(option4);
+
+		option[0] = option1;
+		option[1] = option2;
+		option[2] = option3;
+		option[3] = option4;
+
+
 	}
 }

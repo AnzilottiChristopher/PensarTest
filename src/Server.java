@@ -22,7 +22,7 @@ public class Server implements Runnable
 
     private String clientID;
 
-    private List<ClientHandler> clientHandlers;
+    private static List<ClientHandler> clientHandlers;
 
     private static final String KILL_MSG = "Kill Switch";
 
@@ -62,12 +62,9 @@ public class Server implements Runnable
                 //Accepts new connections
                 Socket clientSocket = null;
                 clientSocket = socket.accept();
-                if (returnQuestionNumber() == 21)
-                {
-                    endGame();
-                }
 
-                if (clientSocket != null && returnQuestionNumber() != 21)
+
+                if (clientSocket != null)
                 {
                     //Create a new clienthandler object and spit it off into a thread
                     clientID = "Client" + (clientHandlers.size() + 1);
@@ -79,6 +76,10 @@ public class Server implements Runnable
                     numClients++;
                 }
 
+                if (returnQuestionNumber() == 21)
+                {
+                    endGame();
+                }
 
             }
         } catch (IOException e)
@@ -102,9 +103,9 @@ public class Server implements Runnable
         state = GameState.END;
     }
 
-    public void removeClient(ClientHandler clientHandler) {
-        clientHandlers.remove(clientHandler);
+    public static synchronized void removeClient(ClientHandler clientHandler) {
         System.out.println("Client disconnected: " + clientHandler.getClientID());
+        clientHandlers.remove(clientHandler);
     }
 
     public List<String> getAllClientIDs() {

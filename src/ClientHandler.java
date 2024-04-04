@@ -72,20 +72,20 @@ public class ClientHandler implements Runnable
         while (Server.returnState() == GameState.RUNNING)
         {
             
-            String incomingMessage;
-            try {
-                incomingMessage = in.readUTF();
-                if (incomingMessage.equals(KILL_MSG)) {
-                    try {
-                        clientSocket.close();
-                        break; 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            String incomingMessage;
+//            try {
+//                incomingMessage = in.readUTF();
+//                if (incomingMessage.equals(KILL_MSG)) {
+//                    try {
+//                        clientSocket.close();
+//                        break;
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
 
             //System.out.println("here");
             if (questionProgress == GameState.SENDING)
@@ -102,6 +102,7 @@ public class ClientHandler implements Runnable
                             break;
                         case 2:
                             filePath = "Questions/Question 2.txt";
+                            //System.out.println("Case 2");
                             break;
                         case 3:
                             filePath = "Questions/Question 3.txt";
@@ -162,7 +163,7 @@ public class ClientHandler implements Runnable
 //                    {
 //                        System.out.println("It's the filepath");
 //                    }
-
+                    System.out.println(Server.returnQuestionNumber());
                     String[] question = toStringArray(filePath);
 
                     questionOut.writeObject(question);
@@ -174,7 +175,14 @@ public class ClientHandler implements Runnable
                     //System.out.println("Sent");
                 } catch (IOException e)
                 {
-                    throw new RuntimeException(e);
+                    //throw new RuntimeException(e);
+                    try
+                    {
+                        clientSocket.close();
+                    } catch (IOException ex)
+                    {
+                        throw new RuntimeException(ex);
+                    }
                 }
             } else if (questionProgress == GameState.ANSWERING)
             {
@@ -185,7 +193,7 @@ public class ClientHandler implements Runnable
                     if (handler.peek().equalsIgnoreCase(clientID))
                     {
                         waiting = true;
-                        System.out.println("Here we are");
+                        //System.out.println("Here we are");
                         try
                         {
                             firstQueue();
@@ -200,6 +208,7 @@ public class ClientHandler implements Runnable
                         }
 
                         handler.clearQueue();
+                        //System.out.println("made it");
                     }  else if (!handler.peek().equals(clientID) && Server.returnNumClients() != 1)
                     {
                         try
@@ -263,7 +272,9 @@ public class ClientHandler implements Runnable
             out.writeUTF("You were first");
             out.flush();
 
+
             int answer = in.readInt();
+            System.out.println(answer);
             Server.switchQuestion();
             //System.out.println(answer);
         } catch (IOException e)
