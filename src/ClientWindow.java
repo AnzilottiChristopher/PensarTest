@@ -215,6 +215,7 @@ public class ClientWindow implements ActionListener
 			if(duration < 0)
 			{
 				timer.setText("Timer expired");
+				poll.setEnabled(false);
 				window.repaint();
 				this.cancel();  // cancel the timed task
 				return;
