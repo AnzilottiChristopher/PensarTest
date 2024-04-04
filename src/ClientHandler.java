@@ -169,6 +169,10 @@ public class ClientHandler implements Runnable
         questionProgress = GameState.SENDING;
     }
 
+    public String getClientID() {
+        return clientID;
+    }
+    
     public void NACK()
     {
         try
