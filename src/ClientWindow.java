@@ -14,7 +14,7 @@ public class ClientWindow implements ActionListener
 	private JButton enter;
 	private JRadioButton options[];
 	private ButtonGroup optionGroup;
-	private JLabel question;
+	JLabel question;
 	private JLabel timer;
 	private JLabel score;
 	private TimerTask clock;
@@ -67,6 +67,7 @@ public class ClientWindow implements ActionListener
 		window = new JFrame("Trivia");
 		question = new JLabel("Q1. This is a sample question"); // represents the question
 		window.add(question);
+
 		question.setBounds(10, 5, 350, 100);;
 		
 		options = new JRadioButton[4];
@@ -232,8 +233,11 @@ public class ClientWindow implements ActionListener
 		}
 	}
 
-	public void updateQuestionText(String newQuestion) {
-        question.setText(newQuestion);
-    }
-	
+	public void updateQuestionText(String nextQuestion, String option1, String option2, String option3, String option4) {
+        question.setText(nextQuestion);
+		options[0].setText(option1);
+		options[1].setText(option2);
+		options[2].setText(option3);
+		options[3].setText(option4);
+	}
 }
