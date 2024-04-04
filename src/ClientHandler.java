@@ -30,10 +30,11 @@ public class ClientHandler implements Runnable
 
     private static boolean waiting = true;
 
-    public ClientHandler(Socket clientSocket, UDPhandler handler)
+    public ClientHandler(Socket clientSocket, UDPhandler handler, String ClientID)
     {
         this.clientSocket = clientSocket;
         this.handler = handler;
+        this.clientID = clientID;
 
 //        UDPhandler handler = new UDPhandler(portUDP);
 //        Thread handlerThread = new Thread(handler);
@@ -45,15 +46,17 @@ public class ClientHandler implements Runnable
         {
             out = new DataOutputStream(this.clientSocket.getOutputStream());
             in = new DataInputStream(this.clientSocket.getInputStream());
+            out.writeUTF(clientID);
+            out.flush();
         } catch (IOException e)
         {
             throw new RuntimeException(e);
         }
-        clientID = "Steve";
     }
     @Override
     public void run()
     {
+        System.out.println(clientID);
         //System.out.println(Server.returnState());
         while (Server.returnState() == GameState.RUNNING)
         {

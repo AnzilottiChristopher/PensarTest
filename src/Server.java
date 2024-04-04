@@ -18,6 +18,8 @@ public class Server implements Runnable
 
     private UDPhandler handler;
 
+    private String ID;
+
 
     public Server(int portNum)
     {
@@ -57,7 +59,7 @@ public class Server implements Runnable
                 if (clientSocket != null)
                 {
                     //Create a new clienthandler object and spit it off into a thread
-                    ClientHandler clientHandler = new ClientHandler(clientSocket, handler);
+                    ClientHandler clientHandler = new ClientHandler(clientSocket, handler, ID);
                     executorService.execute(clientHandler);
                     //counter++;
                     numClients++;
