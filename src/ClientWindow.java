@@ -26,6 +26,7 @@ public class ClientWindow implements ActionListener
 
 	private String name;
 	private int scoreNumber;
+	private int guess;
 	
 	private static SecureRandom random = new SecureRandom();
 
@@ -34,9 +35,9 @@ public class ClientWindow implements ActionListener
 	public JTextField getUser() {
 		return user;
 	}
+
 	public ClientWindow()
 	{
-
 
 		JOptionPane.showMessageDialog(window, "Enter A username to start");
 		
@@ -138,20 +139,35 @@ public class ClientWindow implements ActionListener
 			username.setVisible(false);
 		}
 
+
 		switch(input)
 		{
 			case "Option 1":	// Your code here
+				//clientHandler.setQuestionProgress(GameState.ANSWERING);
+				guess = 1;
+				client.submitButton(guess, false);
 								break;
 			case "Option 2":	// Your code here
+				//clientHandler.setQuestionProgress(GameState.ANSWERING);
+				guess = 2;
+				client.submitButton(guess, false);
 								break;
 			case "Option 3":	// Your code here
+				//clientHandler.setQuestionProgress(GameState.ANSWERING);
+				guess = 3;
+				client.submitButton(guess, false);
 								break;
 			case "Option 4":	// Your code here
+				//clientHandler.setQuestionProgress(GameState.ANSWERING);
+				guess = 4;
+				client.submitButton(guess, false);
 								break;
 			case "Poll":		// Your code here
 				client.sendUsername();
 								break;
 			case "Submit":		// Your code here
+				//clientHandler.setQuestionProgress(GameState.SENDING);
+				client.submitButton(guess, true);
 								break;
 			case "Enter":
 								break;
@@ -217,4 +233,3 @@ public class ClientWindow implements ActionListener
 	}
 	
 }
-
