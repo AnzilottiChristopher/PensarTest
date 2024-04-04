@@ -30,7 +30,7 @@ public class ClientHandler implements Runnable
 
     private static boolean waiting = true;
 
-    public ClientHandler(Socket clientSocket, UDPhandler handler, String ClientID)
+    public ClientHandler(Socket clientSocket, UDPhandler handler, String clientID)
     {
         this.clientSocket = clientSocket;
         this.handler = handler;

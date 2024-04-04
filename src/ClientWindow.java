@@ -212,6 +212,7 @@ public class ClientWindow implements ActionListener
 		@Override
 		public void run()
 		{
+
 			if(duration < 0)
 			{
 				timer.setText("Timer expired");
