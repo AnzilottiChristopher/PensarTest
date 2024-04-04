@@ -59,8 +59,8 @@ public class Client implements Runnable
         try {
             InetAddress serverAddress = socket.getInetAddress(); 
             int serverPort = 5000;
-            buffer = userName.getBytes(StandardCharsets.UTF_8);
-            System.out.println(userName);
+            buffer = clientID.getBytes(StandardCharsets.UTF_8);
+            //System.out.println(userName);
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, serverAddress, serverPort);
             buzzer.send(packet);
         } catch (IOException ex) {
