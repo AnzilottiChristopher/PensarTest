@@ -65,12 +65,12 @@ public class Client implements Runnable
         try {
             InetAddress serverAddress = socket.getInetAddress();
             int serverPort = 5000;
-            socket = new Socket(serverAddress, serverPort);
-            output = new DataOutputStream(socket.getOutputStream());
-            output.writeInt(answer);
-            output.flush();
             if (isSubmit == true){
                 System.out.println("Final answer: " + answer);
+                socket = new Socket(serverAddress, serverPort);
+                output = new DataOutputStream(socket.getOutputStream());
+                output.writeInt(answer);
+                output.flush();
             } else {
                 System.out.println("Selected answer: " + answer);
             }
