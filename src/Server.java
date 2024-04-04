@@ -20,7 +20,7 @@ public class Server implements Runnable
 
     private UDPhandler handler;
 
-    private String ID;
+    private String clientID;
 
     private List<ClientHandler> clientHandlers;
 
@@ -63,12 +63,13 @@ public class Server implements Runnable
                 if (clientSocket != null)
                 {
                     //Create a new clienthandler object and spit it off into a thread
-                    ClientHandler clientHandler = new ClientHandler(clientSocket, handler, ID);
+                    clientID = "Client" + (clientHandlers.size() + 1);
+                    System.out.println(clientID);
+                    ClientHandler clientHandler = new ClientHandler(clientSocket, handler, clientID);
                     executorService.execute(clientHandler);
                     clientHandlers.add(clientHandler);
                     //counter++;
                     numClients++;
-                    String clientID = "Client" + (clientHandlers.size() + 1);
                 }
             }
         } catch (IOException e)
@@ -102,7 +103,9 @@ public class Server implements Runnable
 
     public static int returnQuestionNumber()
     {
-        return questionNumber;
+        //return questionNumber;
+
+        return 1;
     }
 
     public static void main(String[] args)
