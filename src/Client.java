@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
 public class Client
 {
@@ -21,11 +22,12 @@ public class Client
     //Client Data
     private String userName;
 
-    public Client()
+    public Client(String userName)
     {
+        this.userName = userName;
         try
         {
-            socket = new Socket("", 5000);
+            socket = new Socket("LocalHost", 5000);
             System.out.println("Connected");
 
             //Initialize TCP Input Outputs
@@ -48,8 +50,9 @@ public class Client
         try {
             InetAddress serverAddress = socket.getInetAddress(); 
             int serverPort = 5000;
-            byte[] data = userName.getBytes();
-            DatagramPacket packet = new DatagramPacket(data, data.length, serverAddress, serverPort);
+            buffer = userName.getBytes(StandardCharsets.UTF_8);
+            System.out.println(userName);
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, serverAddress, serverPort);
             buzzer.send(packet);
         } catch (IOException ex) {
             ex.printStackTrace();

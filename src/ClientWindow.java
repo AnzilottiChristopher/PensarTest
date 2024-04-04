@@ -28,13 +28,14 @@ public class ClientWindow implements ActionListener
 	private int scoreNumber;
 	
 	private static SecureRandom random = new SecureRandom();
+
+	Client client;
 	
 	public JTextField getUser() {
 		return user;
 	}
 	public ClientWindow()
 	{
-		Client client = new Client();
 
 
 		JOptionPane.showMessageDialog(window, "Enter A username to start");
@@ -50,7 +51,11 @@ public class ClientWindow implements ActionListener
 		enter.addActionListener(e -> System.out.println(user.getText()));
 		enter.addActionListener(this);
 		name = user.getText();
-		
+
+		client = new Client(name);
+		System.out.println(name);
+
+
 
 		username.add(user);
 		username.add(enter);
@@ -93,12 +98,14 @@ public class ClientWindow implements ActionListener
 
 		poll = new JButton("Poll");  // button that use clicks/ like a buzzer
 		poll.setBounds(10, 300, 100, 20);
-		poll.addActionListener(new ActionListener() { // calls actionPerformed of this class
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                client.sendUsername(); // When the button is clicked, send username over UDP
-            }
-        });
+		poll.addActionListener(this);
+		window.add(poll);
+//		poll.addActionListener(new ActionListener() { // calls actionPerformed of this class
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                client.sendUsername(); // When the button is clicked, send username over UDP
+//            }
+//        });
 		window.add(poll);
 		
 		submit = new JButton("Submit");  // button to submit their answer
@@ -140,6 +147,7 @@ public class ClientWindow implements ActionListener
 			case "Option 4":	// Your code here
 								break;
 			case "Poll":		// Your code here
+				client.sendUsername();
 								break;
 			case "Submit":		// Your code here
 								break;

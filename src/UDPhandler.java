@@ -38,6 +38,7 @@ public class UDPhandler implements Runnable
                 socketUDP.receive(packet);
 
                 String received = new String(packet.getData(), 0, packet.getLength());
+                addQueue(received);
 
             } catch (IOException e)
             {
