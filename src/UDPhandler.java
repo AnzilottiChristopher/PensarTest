@@ -15,12 +15,12 @@ public class UDPhandler implements Runnable
 
     private static Queue<String> queue = new LinkedList<>();
 
-    public UDPhandler(int portUDP)
+    public UDPhandler()
     {
         try
         {
-            this.socketUDP = new DatagramSocket(5000 + portUDP);
-            buffer = new byte[256];
+            this.socketUDP = new DatagramSocket(5000);
+            //buffer = new byte[256];
         } catch (SocketException e)
         {
             throw new RuntimeException(e);
@@ -30,6 +30,7 @@ public class UDPhandler implements Runnable
     @Override
     public void run()
     {
+        buffer = new byte[256];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
         while(Server.returnState() == GameState.RUNNING)
         {
@@ -52,5 +53,10 @@ public class UDPhandler implements Runnable
         queue.add(received);
         System.out.println(queue.peek());
 
+    }
+
+    public synchronized String peek()
+    {
+        return queue.peek();
     }
 }
