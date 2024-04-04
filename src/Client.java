@@ -70,12 +70,12 @@ public class Client implements Runnable
 
     public void submitButton(int answer, boolean isSubmit){
         try {
-            InetAddress serverAddress = socket.getInetAddress();
-            int serverPort = 5000;
+//            InetAddress serverAddress = socket.getInetAddress();
+//            int serverPort = 5000;
             if (isSubmit == true){
                 System.out.println("Final answer: " + answer);
-                socket = new Socket(serverAddress, serverPort);
-                output = new DataOutputStream(socket.getOutputStream());
+//                socket = new Socket(serverAddress, serverPort);
+//                output = new DataOutputStream(socket.getOutputStream());
                 output.writeInt(answer);
                 output.flush();
             } else {
@@ -99,7 +99,7 @@ public class Client implements Runnable
     @Override
     public void run()
     {
-        while(socket.isConnected() && Server.returnState() == GameState.RUNNING)
+        while(socket.isConnected())
         {
             try
             {

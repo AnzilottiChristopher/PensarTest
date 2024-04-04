@@ -156,7 +156,14 @@ public class ClientHandler implements Runnable
                     //System.out.println("Sent");
                 } catch (IOException e)
                 {
-                    throw new RuntimeException(e);
+                    //throw new RuntimeException(e);
+                    try
+                    {
+                        clientSocket.close();
+                    } catch (IOException ex)
+                    {
+                        throw new RuntimeException(ex);
+                    }
                 }
             } else if (questionProgress == GameState.ANSWERING)
             {
