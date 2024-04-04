@@ -59,10 +59,11 @@ public class ClientHandler implements Runnable
             {
                 try
                 {
-                    System.out.println("TCP Test");
+                    //This can be used to send tcp data
+                    //System.out.println("TCP Test");
                     out.writeUTF("This is testing");
                     out.flush();
-                    questionProgress = GameState.ANSWERING;
+                    //questionProgress = GameState.ANSWERING;
                     System.out.println("Sent");
                 } catch (IOException e)
                 {
