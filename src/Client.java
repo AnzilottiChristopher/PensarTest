@@ -61,7 +61,7 @@ public class Client implements Runnable
             InetAddress serverAddress = socket.getInetAddress(); 
             int serverPort = 5000;
             buffer = clientID.getBytes(StandardCharsets.UTF_8);
-            //System.out.println(userName);
+            //System.out.println(clientID);
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, serverAddress, serverPort);
             buzzer.send(packet);
         } catch (IOException ex) {
@@ -110,8 +110,11 @@ public class Client implements Runnable
                 //System.out.println("right before");
                 question = (String[]) questionInput.readObject();
 
-                System.out.println(question[0]);
+                //System.out.println(question[0]);
                 //System.out.println("Got it");
+
+                String received = input.readUTF();
+                System.out.println(received);
             } catch (IOException e)
             {
                 try
