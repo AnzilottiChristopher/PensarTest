@@ -81,7 +81,9 @@ public class Server implements Runnable
 
     public static int returnQuestionNumber()
     {
-        return questionNumber;
+        //return questionNumber;
+
+        return 1;
     }
 
     public static void main(String[] args)

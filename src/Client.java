@@ -1,6 +1,4 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -18,6 +16,7 @@ public class Client implements Runnable
     //UDP Data
     private DatagramSocket buzzer = null;
     private byte[] buffer = new byte[256];
+    private byte[] questionBuffer = new byte[256];
 
     //Client Data
     private String userName;
@@ -97,8 +96,20 @@ public class Client implements Runnable
             try
             {
                 //System.out.println("right before");
-                String received = input.readUTF();
-                System.out.println(received);
+
+                //Create a way to write received file
+                FileOutputStream fileOutputStream = new FileOutputStream("Question.txt");
+                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+
+                //Reading the file
+                int bytesRead;
+                while((bytesRead = input.read(buffer)) != -1)
+                {
+                    bufferedOutputStream.write(buffer, 0, bytesRead);
+                }
+                bufferedOutputStream.flush();
+                bufferedOutputStream.close();
+
                 //System.out.println("Got it");
             } catch (IOException e)
             {

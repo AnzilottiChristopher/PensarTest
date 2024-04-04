@@ -1,6 +1,4 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable
@@ -30,11 +28,13 @@ public class ClientHandler implements Runnable
 
     private static boolean waiting = true;
 
+    private byte[] buffer;
+
     public ClientHandler(Socket clientSocket, UDPhandler handler)
     {
         this.clientSocket = clientSocket;
         this.handler = handler;
-
+        buffer = new byte[256];
 //        UDPhandler handler = new UDPhandler(portUDP);
 //        Thread handlerThread = new Thread(handler);
 //        handlerThread.start();
@@ -62,11 +62,13 @@ public class ClientHandler implements Runnable
             {
                 try
                 {
+                    String filePath = "Hello";
                     //This can be used to send tcp data
                     //System.out.println("TCP Test");
                     switch (Server.returnQuestionNumber())
                     {
                         case 1:
+                            filePath = "src/Question 1";
                             break;
                         case 2:
                             break;
@@ -107,7 +109,19 @@ public class ClientHandler implements Runnable
                         case 20:
                             break;
                     }
-                    out.writeUTF("This is testing");
+                    if(!filePath.equals("Hello"))
+                    {
+                        System.out.println("It's the filepath");
+                    }
+                    FileInputStream fileInputStream = new FileInputStream(filePath);
+                    BufferedInputStream bufferedInputStream = new BufferedInputStream((fileInputStream));
+                    int bytesRead;
+                    while ((bytesRead = bufferedInputStream.read(buffer)) != -1)
+                    {
+                        out.write(buffer, 0, bytesRead);
+                    }
+
+                    //out.writeUTF("This is testing");
                     out.flush();
                     questionProgress = GameState.ANSWERING;
                     //System.out.println("Sent");
