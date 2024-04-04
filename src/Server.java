@@ -12,10 +12,16 @@ public class Server implements Runnable
 
     private int counter;
 
+    private static int numClients;
+
+    public static GameState questionProgress;
+
+
     public Server(int portNum)
     {
         this.portNum = portNum;
         counter = 0;
+        numClients = 0;
         state = GameState.RUNNING;
         try
         {
@@ -46,9 +52,12 @@ public class Server implements Runnable
                 if (clientSocket != null)
                 {
                     //Create a new clienthandler object and spit it off into a thread
+                    System.out.println(counter);
                     ClientHandler clientHandler = new ClientHandler(clientSocket, counter);
                     executorService.execute(clientHandler);
                     counter++;
+                    numClients++;
+                    questionProgress = GameState.SENDING;
                 }
             }
         } catch (IOException e)
@@ -59,7 +68,12 @@ public class Server implements Runnable
 
     public static GameState returnState()
     {
-        return Server.state;
+        return state;
+    }
+
+    public static int returnNumClients()
+    {
+        return numClients;
     }
 
     public static void main(String[] args)
