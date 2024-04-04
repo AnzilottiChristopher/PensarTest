@@ -91,7 +91,7 @@ public class ClientWindow implements ActionListener
 		window.add(timer);
 		
 		
-		score = new JLabel("SCORE"); // represents the score
+		score = new JLabel("Score: "); // represents the score
 		score.setBounds(50, 250, 100, 20);
 		window.add(score);
 		scoreNumber = 0;
@@ -269,10 +269,14 @@ public class ClientWindow implements ActionListener
 		options[2].setText(option3);
 		options[3].setText(option4);
 
+		scoreText.setText(String.valueOf(client.returnScore()));
+
 		option[0] = option1;
 		option[1] = option2;
 		option[2] = option3;
 		option[3] = option4;
+
+
 
 
 	}
