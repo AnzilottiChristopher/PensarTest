@@ -20,6 +20,7 @@ public class UDPhandler implements Runnable
         try
         {
             this.socketUDP = new DatagramSocket(5000);
+            //queue.add("THIS IS IMPOSSIBLE");
             //buffer = new byte[256];
         } catch (SocketException e)
         {

@@ -140,10 +140,10 @@ public class ClientHandler implements Runnable
                             filePath = "Questions/Question 20.txt";
                             break;
                     }
-                    if(!filePath.equals("Hello"))
-                    {
-                        System.out.println("It's the filepath");
-                    }
+//                    if(!filePath.equals("Hello"))
+//                    {
+//                        System.out.println("It's the filepath");
+//                    }
 
                     String[] question = toStringArray(filePath);
 
@@ -160,34 +160,54 @@ public class ClientHandler implements Runnable
                 }
             } else if (questionProgress == GameState.ANSWERING)
             {
+                //System.out.println(handler.peek());
                 //System.out.println("Waiting");
-                if (handler.peek() == clientID)
+                if (handler.peek() != null)
                 {
-                    waiting = true;
-                    firstQueue();
-                    synchronized (lock)
+                    if (handler.peek().equalsIgnoreCase(clientID))
                     {
-                        waiting = false;
-                        lock.notify();
-                    }
-                } else if (handler.peek() != null && handler.peek() != clientID)
-                {
-                    NACK();
-                    synchronized (lock)
-                    {
-                        while(waiting)
+                        waiting = true;
+                        System.out.println("Here we are");
+                        try
                         {
-                            try
+                            firstQueue();
+                        } catch (IOException e)
+                        {
+                            throw new RuntimeException(e);
+                        }
+                        synchronized (lock)
+                        {
+                            waiting = false;
+                            lock.notify();
+                        }
+                    }  else if (!handler.peek().equals(clientID) && Server.returnNumClients() != 1)
+                    {
+                        try
+                        {
+                            NACK();
+                        } catch (IOException e)
+                        {
+                            throw new RuntimeException(e);
+                        }
+                        synchronized (lock)
+                        {
+                            while (waiting)
                             {
-                                lock.wait();
-                                System.out.println("waiting");
-                            } catch (InterruptedException e)
-                            {
-                                throw new RuntimeException(e);
+                                try
+                                {
+                                    //System.out.println("Here in nack");
+                                    //System.out.println(clientID);
+                                    lock.wait();
+                                    //System.out.println("waiting");
+                                } catch (InterruptedException e)
+                                {
+                                    throw new RuntimeException(e);
+                                }
                             }
                         }
                     }
                 }
+
             }
         }
     }
@@ -214,7 +234,7 @@ public class ClientHandler implements Runnable
 
     }
 
-    public void firstQueue()
+    public void firstQueue() throws IOException
     {
         try
         {
@@ -225,7 +245,7 @@ public class ClientHandler implements Runnable
             System.out.println(answer);
         } catch (IOException e)
         {
-            throw new RuntimeException(e);
+            clientSocket.close();
         }
 
         questionProgress = GameState.SENDING;
@@ -235,7 +255,7 @@ public class ClientHandler implements Runnable
         return clientID;
     }
 
-    public void NACK()
+    public void NACK() throws IOException
     {
         try
         {
@@ -244,7 +264,7 @@ public class ClientHandler implements Runnable
 
         } catch (IOException e)
         {
-            throw new RuntimeException(e);
+            clientSocket.close();
         }
         questionProgress = GameState.SENDING;
     }

@@ -29,6 +29,7 @@ public class Server implements Runnable
         this.portNum = portNum;
         //counter = 0;
         numClients = 0;
+        questionNumber = 1;
         this.clientHandlers = new ArrayList<>();
         state = GameState.RUNNING;
         try
@@ -103,9 +104,9 @@ public class Server implements Runnable
 
     public static int returnQuestionNumber()
     {
-        //return questionNumber;
+        return questionNumber;
 
-        return 1;
+        //return 1;
     }
 
     public static void main(String[] args)
