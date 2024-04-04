@@ -24,6 +24,8 @@ public class Server implements Runnable
 
     private List<ClientHandler> clientHandlers;
 
+    private static final String KILL_MSG = "Kill Switch";
+
     public Server(int portNum)
     {
         this.portNum = portNum;
@@ -60,8 +62,12 @@ public class Server implements Runnable
                 //Accepts new connections
                 Socket clientSocket = null;
                 clientSocket = socket.accept();
+                if (returnQuestionNumber() == 21)
+                {
+                    endGame();
+                }
 
-                if (clientSocket != null)
+                if (clientSocket != null && returnQuestionNumber() != 21)
                 {
                     //Create a new clienthandler object and spit it off into a thread
                     clientID = "Client" + (clientHandlers.size() + 1);
@@ -72,6 +78,8 @@ public class Server implements Runnable
                     //counter++;
                     numClients++;
                 }
+
+
             }
         } catch (IOException e)
         {
@@ -89,6 +97,11 @@ public class Server implements Runnable
         return numClients;
     }
 
+    public static void endGame()
+    {
+        state = GameState.END;
+    }
+
     public void removeClient(ClientHandler clientHandler) {
         clientHandlers.remove(clientHandler);
         System.out.println("Client disconnected: " + clientHandler.getClientID());
@@ -102,6 +115,21 @@ public class Server implements Runnable
         return clientIDs;
     }
 
+     public void sendKillSwitchMessage(String clientID) {
+        for (ClientHandler handler : clientHandlers) {
+            if (handler.getClientID().equals(clientID)) {
+                handler.sendKillSwitchMessage();
+                break;
+            }
+        }
+    }
+
+    public void sendKillSwitchMessageToAll() {
+        for (ClientHandler handler : clientHandlers) {
+            handler.sendKillSwitchMessage();
+        }
+    }
+
     public static int returnQuestionNumber()
     {
         return questionNumber;
@@ -109,6 +137,10 @@ public class Server implements Runnable
         //return 1;
     }
 
+    public static synchronized void switchQuestion()
+    {
+        questionNumber++;
+    }
     public static void main(String[] args)
     {
         Server server = new Server(5000);

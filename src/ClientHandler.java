@@ -35,6 +35,9 @@ public class ClientHandler implements Runnable
 
     private byte[] buffer;
 
+    private static final String KILL_MSG = "Kill Switch";
+
+
     public ClientHandler(Socket clientSocket, UDPhandler handler, String ClientID)
     {
         this.clientSocket = clientSocket;
@@ -68,6 +71,22 @@ public class ClientHandler implements Runnable
         //System.out.println(Server.returnState());
         while (Server.returnState() == GameState.RUNNING)
         {
+            
+            String incomingMessage;
+            try {
+                incomingMessage = in.readUTF();
+                if (incomingMessage.equals(KILL_MSG)) {
+                    try {
+                        clientSocket.close();
+                        break; 
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             //System.out.println("here");
             if (questionProgress == GameState.SENDING)
             {
@@ -179,6 +198,8 @@ public class ClientHandler implements Runnable
                             waiting = false;
                             lock.notify();
                         }
+
+                        handler.clearQueue();
                     }  else if (!handler.peek().equals(clientID) && Server.returnNumClients() != 1)
                     {
                         try
@@ -209,6 +230,8 @@ public class ClientHandler implements Runnable
 
             }
         }
+
+        //Need to send who won
     }
 
     public String[] toStringArray(String path) throws FileNotFoundException
@@ -241,7 +264,8 @@ public class ClientHandler implements Runnable
             out.flush();
 
             int answer = in.readInt();
-            System.out.println(answer);
+            Server.switchQuestion();
+            //System.out.println(answer);
         } catch (IOException e)
         {
             clientSocket.close();
@@ -252,6 +276,15 @@ public class ClientHandler implements Runnable
 
     public String getClientID() {
         return clientID;
+    }
+
+    public void sendKillSwitchMessage() {
+        try {
+            out.writeUTF(KILL_MSG);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void NACK() throws IOException
