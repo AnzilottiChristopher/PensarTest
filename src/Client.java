@@ -19,20 +19,39 @@ public class Client implements Runnable
     private byte[] buffer = new byte[256];
     private byte[] questionBuffer = new byte[256];
 
-    private String[] question;
+    private static String[] question;
 
     //Client Data
     private String userName;
 
     private String clientID;
     private String button;
+    private static boolean change;
+    
+    
+
+    public static boolean isChange() {
+        return change;
+    }
+
+    public static void setChange(boolean change) {
+        change = change;
+    }
+
+    public static String[] getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String[] question) {
+        this.question = question;
+    }
 
     public Client(String userName)
     {
         this.userName = userName;
         try
         {
-            socket = new Socket("LocalHost", 5000);
+            socket = new Socket("localhost", 5000);
             System.out.println("Connected");
 
             //Initialize TCP Input Outputs
@@ -108,9 +127,11 @@ public class Client implements Runnable
 
                 //System.out.println("right before");
                 question = (String[]) questionInput.readObject();
+                change = true;
 
                 //System.out.println(question[0]);
                 //System.out.println("Got it");
+                System.out.println(change);
 
                 String received = input.readUTF();
                 System.out.println(received);

@@ -14,7 +14,7 @@ public class ClientWindow implements ActionListener
 	private JButton enter;
 	private JRadioButton options[];
 	private ButtonGroup optionGroup;
-	private JLabel question;
+	JLabel question;
 	private JLabel timer;
 	private JLabel score;
 	private TimerTask clock;
@@ -58,8 +58,6 @@ public class ClientWindow implements ActionListener
 		clientThread.start();
 		//System.out.println(name);
 
-
-
 		username.add(user);
 		username.add(enter);
 		username.pack();
@@ -69,6 +67,7 @@ public class ClientWindow implements ActionListener
 		window = new JFrame("Trivia");
 		question = new JLabel("Q1. This is a sample question"); // represents the question
 		window.add(question);
+
 		question.setBounds(10, 5, 350, 100);;
 		
 		options = new JRadioButton[4];
@@ -145,22 +144,22 @@ public class ClientWindow implements ActionListener
 			case "Option 1":	// Your code here
 				//clientHandler.setQuestionProgress(GameState.ANSWERING);
 				guess = 1;
-				client.submitButton(guess, false);
+				//client.submitButton(guess, false);
 								break;
 			case "Option 2":	// Your code here
 				//clientHandler.setQuestionProgress(GameState.ANSWERING);
 				guess = 2;
-				client.submitButton(guess, false);
+				//client.submitButton(guess, false);
 								break;
 			case "Option 3":	// Your code here
 				//clientHandler.setQuestionProgress(GameState.ANSWERING);
 				guess = 3;
-				client.submitButton(guess, false);
+				//client.submitButton(guess, false);
 								break;
 			case "Option 4":	// Your code here
 				//clientHandler.setQuestionProgress(GameState.ANSWERING);
 				guess = 4;
-				client.submitButton(guess, false);
+				//client.submitButton(guess, false);
 								break;
 			case "Poll":		// Your code here
 				client.sendUsername();
@@ -212,6 +211,7 @@ public class ClientWindow implements ActionListener
 		@Override
 		public void run()
 		{
+
 			if(duration < 0)
 			{
 				timer.setText("Timer expired");
@@ -232,5 +232,12 @@ public class ClientWindow implements ActionListener
 			window.repaint();
 		}
 	}
-	
+
+	public void updateQuestionText(String nextQuestion, String option1, String option2, String option3, String option4) {
+        question.setText(nextQuestion);
+		options[0].setText(option1);
+		options[1].setText(option2);
+		options[2].setText(option3);
+		options[3].setText(option4);
+	}
 }
