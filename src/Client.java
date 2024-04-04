@@ -12,14 +12,19 @@ public class Client implements Runnable
     private Socket socket = null;
     private DataInputStream input = null;
     private DataOutputStream output = null;
+    private ObjectInputStream questionInput = null;
 
     //UDP Data
     private DatagramSocket buzzer = null;
     private byte[] buffer = new byte[256];
     private byte[] questionBuffer = new byte[256];
 
+    private String[] question;
+
     //Client Data
     private String userName;
+
+    private String clientID;
     private String button;
 
     public Client(String userName)
@@ -33,6 +38,9 @@ public class Client implements Runnable
             //Initialize TCP Input Outputs
             input = new DataInputStream(socket.getInputStream());
             output = new DataOutputStream(socket.getOutputStream());
+            questionInput = new ObjectInputStream(socket.getInputStream());
+
+            //question = new String[5];
 
 
             //UDP
@@ -95,21 +103,13 @@ public class Client implements Runnable
         {
             try
             {
+                //Receiving ID
+                clientID = input.readUTF();
+
                 //System.out.println("right before");
+                question = (String[]) questionInput.readObject();
 
-                //Create a way to write received file
-                FileOutputStream fileOutputStream = new FileOutputStream("Question.txt");
-                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-
-                //Reading the file
-                int bytesRead;
-                while((bytesRead = input.read(buffer)) != -1)
-                {
-                    bufferedOutputStream.write(buffer, 0, bytesRead);
-                }
-                bufferedOutputStream.flush();
-                bufferedOutputStream.close();
-
+                System.out.println(question[0]);
                 //System.out.println("Got it");
             } catch (IOException e)
             {
@@ -121,6 +121,9 @@ public class Client implements Runnable
                     throw new RuntimeException(ex);
                 }
                 break;
+            } catch (ClassNotFoundException e)
+            {
+                throw new RuntimeException(e);
             }
         }
         //System.out.println("Right after while");
