@@ -1,0 +1,5 @@
+What is the approximate length of the United States border with Canada (mi)?
+5,525
+4,260
+5,050
+4,620

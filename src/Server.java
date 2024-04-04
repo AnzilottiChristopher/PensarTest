@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,26 +20,30 @@ public class Server implements Runnable
 
     private UDPhandler handler;
 
+    private String ID;
+
+    private List<ClientHandler> clientHandlers;
 
     public Server(int portNum)
     {
         this.portNum = portNum;
         //counter = 0;
         numClients = 0;
+        this.clientHandlers = new ArrayList<>();
         state = GameState.RUNNING;
         try
         {
             //Start the server with inputted port number
             socket = new ServerSocket(portNum);
+            handler = new UDPhandler();
+            Thread handlerThread = new Thread(handler);
+            handlerThread.start();
             System.out.println("Server is running");
-
         } catch (IOException e)
         {
             throw new RuntimeException(e);
         }
-        handler = new UDPhandler();
-        Thread handlerThread = new Thread(handler);
-        handlerThread.start();
+ 
     }
 
     @Override
@@ -57,10 +63,12 @@ public class Server implements Runnable
                 if (clientSocket != null)
                 {
                     //Create a new clienthandler object and spit it off into a thread
-                    ClientHandler clientHandler = new ClientHandler(clientSocket, handler);
+                    ClientHandler clientHandler = new ClientHandler(clientSocket, handler, ID);
                     executorService.execute(clientHandler);
+                    clientHandlers.add(clientHandler);
                     //counter++;
                     numClients++;
+                    String clientID = "Client" + (clientHandlers.size() + 1);
                 }
             }
         } catch (IOException e)
@@ -77,6 +85,19 @@ public class Server implements Runnable
     public static int returnNumClients()
     {
         return numClients;
+    }
+
+    public void removeClient(ClientHandler clientHandler) {
+        clientHandlers.remove(clientHandler);
+        System.out.println("Client disconnected: " + clientHandler.getClientID());
+    }
+
+    public List<String> getAllClientIDs() {
+        List<String> clientIDs = new ArrayList<>();
+        for (ClientHandler handler : clientHandlers) {
+            clientIDs.add(handler.getClientID());
+        }
+        return clientIDs;
     }
 
     public static int returnQuestionNumber()

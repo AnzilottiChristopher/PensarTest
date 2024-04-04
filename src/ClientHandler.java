@@ -30,10 +30,13 @@ public class ClientHandler implements Runnable
 
     private byte[] buffer;
 
-    public ClientHandler(Socket clientSocket, UDPhandler handler)
+
+    public ClientHandler(Socket clientSocket, UDPhandler handler, String ClientID)
     {
         this.clientSocket = clientSocket;
         this.handler = handler;
+        this.clientID = clientID;
+
         buffer = new byte[256];
 //        UDPhandler handler = new UDPhandler(portUDP);
 //        Thread handlerThread = new Thread(handler);
@@ -45,15 +48,17 @@ public class ClientHandler implements Runnable
         {
             out = new DataOutputStream(this.clientSocket.getOutputStream());
             in = new DataInputStream(this.clientSocket.getInputStream());
+            out.writeUTF(clientID);
+            out.flush();
         } catch (IOException e)
         {
             throw new RuntimeException(e);
         }
-        clientID = "Steve";
     }
     @Override
     public void run()
     {
+        System.out.println(clientID);
         //System.out.println(Server.returnState());
         while (Server.returnState() == GameState.RUNNING)
         {
@@ -68,7 +73,7 @@ public class ClientHandler implements Runnable
                     switch (Server.returnQuestionNumber())
                     {
                         case 1:
-                            filePath = "src/Question 1";
+                            filePath = "Questions/Question 1.txt";
                             break;
                         case 2:
                             break;
@@ -178,6 +183,10 @@ public class ClientHandler implements Runnable
         }
 
         questionProgress = GameState.SENDING;
+    }
+
+    public String getClientID() {
+        return clientID;
     }
 
     public void NACK()
