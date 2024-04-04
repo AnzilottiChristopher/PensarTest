@@ -53,7 +53,9 @@ public class ClientWindow implements ActionListener
 		name = user.getText();
 
 		client = new Client(name);
-		System.out.println(name);
+		Thread clientThread = new Thread(client);
+		clientThread.start();
+		//System.out.println(name);
 
 
 
@@ -127,7 +129,7 @@ public class ClientWindow implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		System.out.println("You clicked " + e.getActionCommand());
+		//System.out.println("You clicked " + e.getActionCommand());
 
 		// input refers to the radio button you selected or button you clicked
 		String input = e.getActionCommand();  

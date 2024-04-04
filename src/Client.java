@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 
-public class Client
+public class Client implements Runnable
 {
     //TCP Data
     private Socket socket = null;
@@ -33,6 +33,7 @@ public class Client
             //Initialize TCP Input Outputs
             input = new DataInputStream(socket.getInputStream());
             output = new DataOutputStream(socket.getOutputStream());
+
 
             //UDP
             this.buzzer = new DatagramSocket();
@@ -59,4 +60,29 @@ public class Client
         }
     }
 
+    @Override
+    public void run()
+    {
+        while(socket.isConnected())
+        {
+            try
+            {
+                //System.out.println("right before");
+                String received = input.readUTF();
+                System.out.println(received);
+                //System.out.println("Got it");
+            } catch (IOException e)
+            {
+                try
+                {
+                    socket.close();
+                } catch (IOException ex)
+                {
+                    throw new RuntimeException(ex);
+                }
+                break;
+            }
+        }
+        //System.out.println("Right after while");
+    }
 }
