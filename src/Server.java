@@ -8,11 +8,14 @@ public class Server implements Runnable
 {
     private ServerSocket socket;
     private int portNum;
-    private GameState state;
+    private static GameState state;
+
+    private int counter;
 
     public Server(int portNum)
     {
         this.portNum = portNum;
+        counter = 0;
         state = GameState.RUNNING;
         try
         {
@@ -43,14 +46,20 @@ public class Server implements Runnable
                 if (clientSocket != null)
                 {
                     //Create a new clienthandler object and spit it off into a thread
-                    ClientHandler clientHandler = new ClientHandler(clientSocket);
+                    ClientHandler clientHandler = new ClientHandler(clientSocket, counter);
                     executorService.execute(clientHandler);
+                    counter++;
                 }
             }
         } catch (IOException e)
         {
             throw new RuntimeException(e);
         }
+    }
+
+    public static GameState returnState()
+    {
+        return Server.state;
     }
 
     public static void main(String[] args)

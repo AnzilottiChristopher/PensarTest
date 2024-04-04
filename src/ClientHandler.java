@@ -3,6 +3,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.Socket;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ClientHandler implements Runnable
 {
@@ -12,17 +14,24 @@ public class ClientHandler implements Runnable
     private Socket clientSocket;
 
 
+
+
     //UDP
-    private DatagramSocket socketUDP;
-    private byte[] buffer;
+//    private DatagramSocket socketUDP;
+//    private byte[] buffer;
 
     //Basic Information
     private String username;
 
 
-    public ClientHandler(Socket clientSocket)
+    public ClientHandler(Socket clientSocket, int portUDP)
     {
         this.clientSocket = clientSocket;
+
+
+        UDPhandler handler = new UDPhandler(portUDP);
+        Thread handlerThread = new Thread(handler);
+        handlerThread.start();
 
         //TCP Setup
         try
@@ -34,11 +43,13 @@ public class ClientHandler implements Runnable
             throw new RuntimeException(e);
         }
 
-        //UDP Setup
     }
     @Override
     public void run()
     {
+        while (Server.returnState() == GameState.RUNNING)
+        {
 
+        }
     }
 }
