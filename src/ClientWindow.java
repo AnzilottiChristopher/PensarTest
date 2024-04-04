@@ -34,9 +34,9 @@ public class ClientWindow implements ActionListener
 	public JTextField getUser() {
 		return user;
 	}
+
 	public ClientWindow()
 	{
-
 
 		JOptionPane.showMessageDialog(window, "Enter A username to start");
 		
@@ -138,20 +138,35 @@ public class ClientWindow implements ActionListener
 			username.setVisible(false);
 		}
 
+		int guess = 0;
 		switch(input)
 		{
 			case "Option 1":	// Your code here
+				//clientHandler.setQuestionProgress(GameState.ANSWERING);
+				guess = 1;
+				client.selectedAnswer(1);
 								break;
 			case "Option 2":	// Your code here
+				//clientHandler.setQuestionProgress(GameState.ANSWERING);
+				guess = 2;
+				client.selectedAnswer(2);
 								break;
 			case "Option 3":	// Your code here
+				//clientHandler.setQuestionProgress(GameState.ANSWERING);
+				guess = 3;
+				client.selectedAnswer(3);
 								break;
 			case "Option 4":	// Your code here
+				//clientHandler.setQuestionProgress(GameState.ANSWERING);
+				guess = 4;
+				client.selectedAnswer(4);
 								break;
 			case "Poll":		// Your code here
 				client.sendUsername();
 								break;
 			case "Submit":		// Your code here
+				//clientHandler.setQuestionProgress(GameState.SENDING);
+				client.submitButton(guess);
 								break;
 			case "Enter":
 								break;
