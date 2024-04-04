@@ -1,5 +1,7 @@
 public enum GameState
 {
     RUNNING,
-    END
+    END,
+    SENDING,
+    ANSWERING
 }
