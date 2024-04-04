@@ -26,6 +26,7 @@ public class ClientWindow implements ActionListener
 
 	private String name;
 	private int scoreNumber;
+	private int guess;
 	
 	private static SecureRandom random = new SecureRandom();
 
@@ -138,35 +139,35 @@ public class ClientWindow implements ActionListener
 			username.setVisible(false);
 		}
 
-		int guess = 0;
+
 		switch(input)
 		{
 			case "Option 1":	// Your code here
 				//clientHandler.setQuestionProgress(GameState.ANSWERING);
 				guess = 1;
-				client.selectedAnswer(1);
+				client.submitButton(guess, false);
 								break;
 			case "Option 2":	// Your code here
 				//clientHandler.setQuestionProgress(GameState.ANSWERING);
 				guess = 2;
-				client.selectedAnswer(2);
+				client.submitButton(guess, false);
 								break;
 			case "Option 3":	// Your code here
 				//clientHandler.setQuestionProgress(GameState.ANSWERING);
 				guess = 3;
-				client.selectedAnswer(3);
+				client.submitButton(guess, false);
 								break;
 			case "Option 4":	// Your code here
 				//clientHandler.setQuestionProgress(GameState.ANSWERING);
 				guess = 4;
-				client.selectedAnswer(4);
+				client.submitButton(guess, false);
 								break;
 			case "Poll":		// Your code here
 				client.sendUsername();
 								break;
 			case "Submit":		// Your code here
 				//clientHandler.setQuestionProgress(GameState.SENDING);
-				client.submitButton(guess);
+				client.submitButton(guess, true);
 								break;
 			case "Enter":
 								break;
