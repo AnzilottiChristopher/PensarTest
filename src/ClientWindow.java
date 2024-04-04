@@ -58,8 +58,6 @@ public class ClientWindow implements ActionListener
 		clientThread.start();
 		//System.out.println(name);
 
-
-
 		username.add(user);
 		username.add(enter);
 		username.pack();
@@ -145,22 +143,22 @@ public class ClientWindow implements ActionListener
 			case "Option 1":	// Your code here
 				//clientHandler.setQuestionProgress(GameState.ANSWERING);
 				guess = 1;
-				client.submitButton(guess, false);
+				//client.submitButton(guess, false);
 								break;
 			case "Option 2":	// Your code here
 				//clientHandler.setQuestionProgress(GameState.ANSWERING);
 				guess = 2;
-				client.submitButton(guess, false);
+				//client.submitButton(guess, false);
 								break;
 			case "Option 3":	// Your code here
 				//clientHandler.setQuestionProgress(GameState.ANSWERING);
 				guess = 3;
-				client.submitButton(guess, false);
+				//client.submitButton(guess, false);
 								break;
 			case "Option 4":	// Your code here
 				//clientHandler.setQuestionProgress(GameState.ANSWERING);
 				guess = 4;
-				client.submitButton(guess, false);
+				//client.submitButton(guess, false);
 								break;
 			case "Poll":		// Your code here
 				client.sendUsername();
@@ -233,5 +231,9 @@ public class ClientWindow implements ActionListener
 			window.repaint();
 		}
 	}
+
+	public void updateQuestionText(String newQuestion) {
+        question.setText(newQuestion);
+    }
 	
 }

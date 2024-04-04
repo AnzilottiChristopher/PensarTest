@@ -35,7 +35,6 @@ public class ClientHandler implements Runnable
 
     private byte[] buffer;
 
-
     public ClientHandler(Socket clientSocket, UDPhandler handler, String ClientID)
     {
         this.clientSocket = clientSocket;

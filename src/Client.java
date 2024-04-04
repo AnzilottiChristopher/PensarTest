@@ -26,13 +26,14 @@ public class Client implements Runnable
 
     private String clientID;
     private String button;
+    
 
     public Client(String userName)
     {
         this.userName = userName;
         try
         {
-            socket = new Socket("LocalHost", 5000);
+            socket = new Socket("10.111.112.215", 5000);
             System.out.println("Connected");
 
             //Initialize TCP Input Outputs
