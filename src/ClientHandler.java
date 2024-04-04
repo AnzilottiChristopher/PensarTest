@@ -180,6 +180,8 @@ public class ClientHandler implements Runnable
                             waiting = false;
                             lock.notify();
                         }
+
+                        handler.clearQueue();
                     }  else if (!handler.peek().equals(clientID) && Server.returnNumClients() != 1)
                     {
                         try
@@ -210,6 +212,8 @@ public class ClientHandler implements Runnable
 
             }
         }
+
+        //Need to send who won
     }
 
     public String[] toStringArray(String path) throws FileNotFoundException
@@ -242,7 +246,8 @@ public class ClientHandler implements Runnable
             out.flush();
 
             int answer = in.readInt();
-            System.out.println(answer);
+            Server.switchQuestion();
+            //System.out.println(answer);
         } catch (IOException e)
         {
             clientSocket.close();

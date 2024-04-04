@@ -99,7 +99,7 @@ public class Client implements Runnable
     @Override
     public void run()
     {
-        while(socket.isConnected())
+        while(socket.isConnected() && Server.returnState() == GameState.RUNNING)
         {
             try
             {
