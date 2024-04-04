@@ -27,6 +27,8 @@ public class ClientWindow implements ActionListener
 	private String name;
 	private int scoreNumber;
 	private int guess;
+	private boolean checkPoll = true;
+	private boolean checkSubmit = false;
 	
 	private static SecureRandom random = new SecureRandom();
 
@@ -115,6 +117,7 @@ public class ClientWindow implements ActionListener
 		submit = new JButton("Submit");  // button to submit their answer
 		submit.setBounds(200, 300, 100, 20);
 		submit.addActionListener(this);  // calls actionPerformed of this class
+		submitEnabled(false);
 		window.add(submit);
 		
 		
@@ -156,9 +159,13 @@ public class ClientWindow implements ActionListener
 		} else if (input.equalsIgnoreCase("Poll"))
 		{
 			client.sendUsername();
+			pollEnabled(false);
+			submitEnabled(true);
 		} else if (input.equalsIgnoreCase("Submit"))
 		{
 			client.submitButton(guess, true);
+			pollEnabled(true);
+			submitEnabled(false);
 		} else if (input.equalsIgnoreCase("Enter"))
 		{
 
@@ -273,7 +280,21 @@ public class ClientWindow implements ActionListener
 		option[1] = option2;
 		option[2] = option3;
 		option[3] = option4;
+	}
 
+	public void pollEnabled(boolean checkPoll){
+		if (checkPoll){
+			poll.setEnabled(true);
+		} else {
+			poll.setEnabled(false);
+		}
+	}
 
+	public void submitEnabled(boolean checkSubmit){
+		if (checkSubmit){
+			submit.setEnabled(true);
+		} else {
+			submit.setEnabled(false);
+		}
 	}
 }

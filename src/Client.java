@@ -131,6 +131,7 @@ public class Client implements Runnable
 
                 //System.out.println("right before");
                 question = (String[]) questionInput.readObject();
+
                 //System.out.println(question[0]);
                 change = true;
 
