@@ -188,7 +188,8 @@ public class ClientHandler implements Runnable
 //                    {
 //                        System.out.println("It's the filepath");
 //                    }
-                    System.out.println(Server.returnQuestionNumber());
+
+                   // System.out.println(Server.returnQuestionNumber()); //Why is this constantly running
                     String[] question = toStringArray(filePath);
 
                     questionOut.writeObject(question);

@@ -76,10 +76,7 @@ public class Server implements Runnable
                     numClients++;
                 }
 
-                if (returnQuestionNumber() == 21)
-                {
-                    endGame();
-                }
+
 
             }
         } catch (IOException e)
@@ -131,7 +128,7 @@ public class Server implements Runnable
         }
     }
 
-    public static int returnQuestionNumber()
+    public synchronized static int returnQuestionNumber()
     {
         return questionNumber;
 
@@ -141,11 +138,26 @@ public class Server implements Runnable
     public static synchronized void switchQuestion()
     {
         questionNumber++;
+
+
+        System.out.println(questionNumber);
     }
     public static void main(String[] args)
     {
         Server server = new Server(5000);
         ExecutorService executorService = Executors.newCachedThreadPool();
         executorService.execute(server);
+
+        while(state == GameState.RUNNING)
+        {
+            //System.out.println(returnQuestionNumber());
+            if (returnQuestionNumber() == 21)
+            {
+                //System.out.println("End game1");
+
+                endGame();
+                //System.out.println("End game2");
+            }
+        }
     }
 }
