@@ -56,6 +56,11 @@ public class UDPhandler implements Runnable
 
     }
 
+    public synchronized void clearQueue()
+    {
+        queue.clear();
+    }
+
     public synchronized String peek()
     {
         return queue.peek();

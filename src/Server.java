@@ -60,8 +60,12 @@ public class Server implements Runnable
                 //Accepts new connections
                 Socket clientSocket = null;
                 clientSocket = socket.accept();
+                if (returnQuestionNumber() == 21)
+                {
+                    endGame();
+                }
 
-                if (clientSocket != null)
+                if (clientSocket != null && returnQuestionNumber() != 21)
                 {
                     //Create a new clienthandler object and spit it off into a thread
                     clientID = "Client" + (clientHandlers.size() + 1);
@@ -72,6 +76,8 @@ public class Server implements Runnable
                     //counter++;
                     numClients++;
                 }
+
+
             }
         } catch (IOException e)
         {
@@ -87,6 +93,11 @@ public class Server implements Runnable
     public static int returnNumClients()
     {
         return numClients;
+    }
+
+    public static void endGame()
+    {
+        state = GameState.END;
     }
 
     public void removeClient(ClientHandler clientHandler) {
@@ -109,6 +120,10 @@ public class Server implements Runnable
         //return 1;
     }
 
+    public static synchronized void switchQuestion()
+    {
+        questionNumber++;
+    }
     public static void main(String[] args)
     {
         Server server = new Server(5000);
