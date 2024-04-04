@@ -27,6 +27,8 @@ public class Client implements Runnable
     private String clientID;
     private String button;
     private static boolean change;
+
+    private int userScore;
     
     
 
@@ -49,6 +51,7 @@ public class Client implements Runnable
     public Client(String userName)
     {
         this.userName = userName;
+        userScore = 0;
         try
         {
             socket = new Socket("localhost", 5000);
@@ -136,10 +139,26 @@ public class Client implements Runnable
                 change = true;
 
                 //System.out.println("Got it");
-                System.out.println(change);
+                //System.out.println(change);
 
                 String received = input.readUTF();
                 System.out.println(received);
+
+                //If they are the first to poll they can receive more information
+                if (received.equalsIgnoreCase("You were first"))
+                {
+                    String response = input.readUTF();
+                    if (response.equalsIgnoreCase("Correct"))
+                    {
+                        userScore += 10;
+                    } else if (response.equalsIgnoreCase("Incorrect"))
+                    {
+                        userScore -= 10;
+                    }
+                    System.out.println(response);
+                }
+
+
             } catch (IOException e)
             {
                 try
@@ -156,5 +175,10 @@ public class Client implements Runnable
             }
         }
         //System.out.println("Right after while");
+    }
+
+    public int returnScore()
+    {
+        return userScore;
     }
 }

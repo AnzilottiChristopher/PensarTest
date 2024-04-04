@@ -35,6 +35,10 @@ public class ClientHandler implements Runnable
 
     private byte[] buffer;
 
+    private int answer;
+
+    private int score;
+
     private static final String KILL_MSG = "Kill Switch";
 
 
@@ -43,6 +47,7 @@ public class ClientHandler implements Runnable
         this.clientSocket = clientSocket;
         this.handler = handler;
         this.clientID = ClientID;
+        score = 0;
 
         buffer = new byte[256];
 //        UDPhandler handler = new UDPhandler(portUDP);
@@ -99,71 +104,92 @@ public class ClientHandler implements Runnable
                     {
                         case 1:
                             filePath = "Questions/Question 1.txt";
+                            answer = 2;
                             break;
                         case 2:
                             filePath = "Questions/Question 2.txt";
+                            answer = 3;
                             //System.out.println("Case 2");
                             break;
                         case 3:
                             filePath = "Questions/Question 3.txt";
+                            answer = 3;
                             break;
                         case 4:
                             filePath = "Questions/Question 4.txt";
+                            answer = 1;
                             break;
                         case 5:
                             filePath = "Questions/Question 5.txt";
+                            answer = 1;
                             break;
                         case 6:
                             filePath = "Questions/Question 6.txt";
+                            answer = 4;
                             break;
                         case 7:
                             filePath = "Questions/Question 7.txt";
+                            answer = 1;
                             break;
                         case 8:
                             filePath = "Questions/Question 8.txt";
+                            answer = 2;
                             break;
                         case 9:
                             filePath = "Questions/Question 9.txt";
+                            answer = 1;
                             break;
                         case 10:
                             filePath = "Questions/Question 10.txt";
+                            answer = 4;
                             break;
                         case 11:
                             filePath = "Questions/Question 11.txt";
+                            answer = 1;
                             break;
                         case 12:
                             filePath = "Questions/Question 12.txt";
+                            answer = 2;
                             break;
                         case 13:
                             filePath = "Questions/Question 13.txt";
+                            answer = 4;
                             break;
                         case 14:
                             filePath = "Questions/Question 14.txt";
+                            answer = 2;
                             break;
                         case 15:
                             filePath = "Questions/Question 15.txt";
+                            answer = 2;
                             break;
                         case 16:
                             filePath = "Questions/Question 16.txt";
+                            answer = 1;
                             break;
                         case 17:
                             filePath = "Questions/Question 17.txt";
+                            answer = 3;
                             break;
                         case 18:
                             filePath = "Questions/Question 18.txt";
+                            answer = 2;
                             break;
                         case 19:
                             filePath = "Questions/Question 19.txt";
+                            answer = 1;
                             break;
                         case 20:
                             filePath = "Questions/Question 20.txt";
+                            answer = 4;
                             break;
                     }
 //                    if(!filePath.equals("Hello"))
 //                    {
 //                        System.out.println("It's the filepath");
 //                    }
-                    System.out.println(Server.returnQuestionNumber());
+
+                   // System.out.println(Server.returnQuestionNumber()); //Why is this constantly running
                     String[] question = toStringArray(filePath);
 
                     questionOut.writeObject(question);
@@ -275,6 +301,19 @@ public class ClientHandler implements Runnable
 
             int answer = in.readInt();
             System.out.println(answer);
+            if (answer == this.answer)
+            {
+                score += 10;
+                out.writeUTF("Correct");
+                out.flush();
+            }
+            else
+            {
+                score -= 10;
+                out.writeUTF("Incorrect");
+                out.flush();
+            }
+
             Server.switchQuestion();
             //System.out.println(answer);
         } catch (IOException e)

@@ -29,7 +29,7 @@ public class ClientWindow implements ActionListener
 	private int guess;
 	private boolean checkPoll = true;
 	private boolean checkSubmit = false;
-	
+
 	private static SecureRandom random = new SecureRandom();
 
 	private String[] option = new String[4];
@@ -93,7 +93,7 @@ public class ClientWindow implements ActionListener
 		window.add(timer);
 		
 		
-		score = new JLabel("SCORE"); // represents the score
+		score = new JLabel("Score: "); // represents the score
 		score.setBounds(50, 250, 100, 20);
 		window.add(score);
 		scoreNumber = 0;
@@ -269,12 +269,15 @@ public class ClientWindow implements ActionListener
 		}
 	}
 
-	public void updateQuestionText(String nextQuestion, String option1, String option2, String option3, String option4) {
-        question.setText(nextQuestion);
+	public void updateQuestionText(String nextQuestion, String option1, String option2, String option3, String option4)
+	{
+		question.setText(nextQuestion);
 		options[0].setText(option1);
 		options[1].setText(option2);
 		options[2].setText(option3);
 		options[3].setText(option4);
+
+		scoreText.setText(String.valueOf(client.returnScore()));
 
 		option[0] = option1;
 		option[1] = option2;
