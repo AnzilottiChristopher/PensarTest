@@ -27,7 +27,7 @@ public class ClientHandler implements Runnable
 
     private GameState questionProgress;
 
-
+    
     public ClientHandler(Socket clientSocket, int portUDP)
     {
         this.clientSocket = clientSocket;
@@ -52,8 +52,8 @@ public class ClientHandler implements Runnable
     public void run()
     {
         System.out.println(Server.returnState());
-        while (Server.returnState() == GameState.RUNNING)
-        {
+        //while (Server.returnState() == GameState.RUNNING)
+        //{
             //System.out.println("here");
             if (Server.questionProgress == GameState.SENDING && questionProgress == GameState.RUNNING)
             {
@@ -73,7 +73,7 @@ public class ClientHandler implements Runnable
             {
                 //System.out.println("Waiting");
             }
-        }
+        //}
     }
 
     public synchronized boolean nextQuestionCounter()

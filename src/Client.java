@@ -21,6 +21,7 @@ public class Client implements Runnable
 
     //Client Data
     private String userName;
+    private String button;
 
     public Client(String userName)
     {
@@ -59,6 +60,34 @@ public class Client implements Runnable
             ex.printStackTrace();
         }
     }
+
+    public void submitButton(int answer, boolean isSubmit){
+        try {
+            InetAddress serverAddress = socket.getInetAddress();
+            int serverPort = 5000;
+            socket = new Socket(serverAddress, serverPort);
+            output = new DataOutputStream(socket.getOutputStream());
+            output.writeInt(answer);
+            output.flush();
+            if (isSubmit == true){
+                System.out.println("Final answer: " + answer);
+            } else {
+                System.out.println("Selected answer: " + answer);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // public void selectedAnswer(int answer) {
+    //     try {
+    //         output.writeInt(answer);
+    //         output.flush();
+    //         System.out.println("Selected answer: " + answer);
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
     @Override
     public void run()
