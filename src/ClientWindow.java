@@ -167,7 +167,7 @@ public class ClientWindow implements ActionListener
 			client.sendUsername();
 			if (client.returnACK().equalsIgnoreCase("You were first"))
 			{
-				pollEnabled(false);
+                pollEnabled(false);
 				submitEnabled(true);
 			}
 			pollPressed = true;
@@ -265,10 +265,12 @@ public class ClientWindow implements ActionListener
 				//System.out.println(client.returnACK());
 				if (client.returnACK().equalsIgnoreCase("You were First"))
 				{
+					//System.out.println("Here in First");
 					buzzTrue();
 				}
 				else
 				{
+					//System.out.println("here");
 					Question = false;
 					buzzing = false;
 				}

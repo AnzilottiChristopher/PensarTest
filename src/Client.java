@@ -175,10 +175,20 @@ public class Client implements Runnable
         //System.out.println("Right after while");
     }
 
-    public String returnACK()
+    public synchronized String returnACK()
     {
+        try
+        {
+            wait(500);
+
+        } catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
+        }
+
         if (received.equalsIgnoreCase("You were first"))
         {
+            //System.out.println(received);
             return received;
         } else return "Nothing";
     }
