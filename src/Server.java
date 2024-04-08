@@ -68,7 +68,7 @@ public class Server implements Runnable
                 {
                     //Create a new clienthandler object and spit it off into a thread
                     clientID = "Client" + (clientHandlers.size() + 1);
-                    System.out.println(clientID);
+                    //System.out.println(clientID);
                     ClientHandler clientHandler = new ClientHandler(clientSocket, handler, clientID);
                     executorService.execute(clientHandler);
                     clientHandlers.add(clientHandler);

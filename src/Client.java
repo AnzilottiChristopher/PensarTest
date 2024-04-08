@@ -29,6 +29,8 @@ public class Client implements Runnable
     private static boolean change;
 
     private int userScore;
+
+    private String received;
     
     
 
@@ -141,12 +143,14 @@ public class Client implements Runnable
                 //System.out.println("Got it");
                 //System.out.println(change);
 
-                String received = input.readUTF();
+                received = input.readUTF();
+                String ack = received;
                 System.out.println(received);
 
                 //If they are the first to poll they can receive more information
-                if (received.equalsIgnoreCase("You were first"))
+                if (ack.equalsIgnoreCase("You were first"))
                 {
+                    ack = "done";
                     String response = input.readUTF();
                     if (response.equalsIgnoreCase("Correct"))
                     {
@@ -161,13 +165,7 @@ public class Client implements Runnable
 
             } catch (IOException e)
             {
-                try
-                {
-                    socket.close();
-                } catch (IOException ex)
-                {
-                    throw new RuntimeException(ex);
-                }
+                //closeEverything(socket, input, output);
                 break;
             } catch (ClassNotFoundException e)
             {
@@ -175,6 +173,37 @@ public class Client implements Runnable
             }
         }
         //System.out.println("Right after while");
+    }
+
+    public String returnACK()
+    {
+        if (received.equalsIgnoreCase("You were first"))
+        {
+            return received;
+        } else return "Nothing";
+    }
+
+    public void closeEverything(Socket clientSocket, DataInputStream in, DataOutputStream out)
+    {
+        try
+        {
+            if (clientSocket != null)
+            {
+                clientSocket.close();
+            }
+            if (in != null)
+            {
+                in.close();
+            }
+            if (out != null)
+            {
+                out.close();
+            }
+        } catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public int returnScore()
