@@ -33,7 +33,7 @@ public class Client implements Runnable
     private String received;
 
     private boolean duration;
-    
+
     
 
     public static boolean isChange() {
@@ -59,6 +59,7 @@ public class Client implements Runnable
         duration = false;
         try
         {
+            String serverIP = getUserInput("Enter the server IP address:");
             socket = new Socket("localhost", 5000);
             System.out.println("Connected");
 
@@ -227,6 +228,12 @@ public class Client implements Runnable
     public boolean returnChange()
     {
         return duration;
+    }
+
+    private static String getUserInput(String prompt) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println(prompt);
+        return reader.readLine();
     }
 
     public int returnScore()
