@@ -54,7 +54,8 @@ public class Client implements Runnable
         userScore = 0;
         try
         {
-            socket = new Socket("localhost", 5000);
+            String serverIP = getUserInput("Enter the server IP address:");
+            socket = new Socket(serverIP, 5000);
             System.out.println("Connected");
 
             //Initialize TCP Input Outputs
@@ -175,6 +176,12 @@ public class Client implements Runnable
             }
         }
         //System.out.println("Right after while");
+    }
+
+    private static String getUserInput(String prompt) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println(prompt);
+        return reader.readLine();
     }
 
     public int returnScore()
