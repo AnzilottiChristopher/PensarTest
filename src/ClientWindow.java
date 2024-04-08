@@ -32,6 +32,12 @@ public class ClientWindow implements ActionListener
 
 	private static SecureRandom random = new SecureRandom();
 
+	private static boolean buzzing = false;
+	private static boolean Question = true;
+
+	private boolean pollPressed = false;
+	private boolean submitPressed = false;
+
 	private String[] option = new String[4];
 
 	Client client;
@@ -159,13 +165,20 @@ public class ClientWindow implements ActionListener
 		} else if (input.equalsIgnoreCase("Poll"))
 		{
 			client.sendUsername();
-			pollEnabled(false);
-			submitEnabled(true);
+			if (client.returnACK().equalsIgnoreCase("You were first"))
+			{
+                pollEnabled(false);
+				submitEnabled(true);
+			}
+			pollPressed = true;
+			submitPressed = false;
 		} else if (input.equalsIgnoreCase("Submit"))
 		{
 			client.submitButton(guess, true);
 			pollEnabled(true);
 			submitEnabled(false);
+			pollPressed = false;
+			submitPressed = true;
 		} else if (input.equalsIgnoreCase("Enter"))
 		{
 
@@ -244,16 +257,60 @@ public class ClientWindow implements ActionListener
 		{
 			this.duration = duration;
 		}
+
+		public void resetDuration()
+		{
+			this.duration = 30;
+		}
+
 		@Override
 		public void run()
 		{
+			if (pollPressed)
+			{
+				//System.out.println(client.returnACK());
+				if (client.returnACK().equalsIgnoreCase("You were First"))
+				{
+					//System.out.println("Here in First");
+					buzzTrue();
+				}
+				else
+				{
+					//System.out.println("here");
+					Question = false;
+					buzzing = false;
+				}
+				pollPressed = false;
+			}
+			if (submitPressed)
+			{
+				questionTrue();
+				submitPressed = false;
+			}
+			if (Question)
+			{
+				duration = 30;
+				Question = false;
+				//System.out.println("Here");
+			}
+			if (buzzing)
+			{
+				duration = 15;
+				buzzing = false;
+				//System.out.println("Here");
+			}
 
+			if (!Question && !buzzing)
+			{
+				timer.setText("Other Person is answering");
+				window.repaint();
+			}
 			if(duration < 0)
 			{
 				timer.setText("Timer expired");
 				poll.setEnabled(false);
 				window.repaint();
-				this.cancel();  // cancel the timed task
+				//this.cancel();  // cancel the timed task
 				return;
 				// you can enable/disable your buttons for poll/submit here as needed
 			}
@@ -267,6 +324,21 @@ public class ClientWindow implements ActionListener
 			duration--;
 			window.repaint();
 		}
+	}
+
+	public synchronized void buzzTrue()
+	{
+		buzzing = true;
+		Question = false;
+
+	}
+
+
+
+	public synchronized void questionTrue()
+	{
+		Question = true;
+		buzzing = false;
 	}
 
 	public void updateQuestionText(String nextQuestion, String option1, String option2, String option3, String option4)

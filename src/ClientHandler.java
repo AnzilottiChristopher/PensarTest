@@ -41,6 +41,8 @@ public class ClientHandler implements Runnable
 
     private static final String KILL_MSG = "Kill Switch";
 
+    private boolean closeBool;
+
 
     public ClientHandler(Socket clientSocket, UDPhandler handler, String ClientID)
     {
@@ -48,6 +50,7 @@ public class ClientHandler implements Runnable
         this.handler = handler;
         this.clientID = ClientID;
         score = 0;
+        closeBool = false;
 
         buffer = new byte[256];
 //        UDPhandler handler = new UDPhandler(portUDP);
@@ -66,7 +69,10 @@ public class ClientHandler implements Runnable
             out.flush();
         } catch (IOException e)
         {
-            throw new RuntimeException(e);
+            if (clientSocket.isConnected())
+            {
+                closeEverything(clientSocket, in, out, questionOut);
+            }
         }
     }
     @Override
@@ -74,7 +80,7 @@ public class ClientHandler implements Runnable
     {
         System.out.println(clientID);
         //System.out.println(Server.returnState());
-        while (Server.returnState() == GameState.RUNNING)
+        while (Server.returnState() == GameState.RUNNING && clientSocket.isConnected())
         {
             
 //            String incomingMessage;
@@ -202,13 +208,12 @@ public class ClientHandler implements Runnable
                 } catch (IOException e)
                 {
                     //throw new RuntimeException(e);
-                    try
+                    if (clientSocket.isConnected())
                     {
-                        clientSocket.close();
-                    } catch (IOException ex)
-                    {
-                        throw new RuntimeException(ex);
+                        closeEverything(clientSocket, in, out, questionOut);
+                        //System.out.println("Closing here");
                     }
+                    break;
                 }
             } else if (questionProgress == GameState.ANSWERING)
             {
@@ -225,7 +230,13 @@ public class ClientHandler implements Runnable
                             firstQueue();
                         } catch (IOException e)
                         {
-                            throw new RuntimeException(e);
+                            if (clientSocket.isConnected())
+                            {
+                                closeEverything(clientSocket, in, out, questionOut);
+                                //System.out.println("Closing here2");
+
+                            }
+                            break;
                         }
                         synchronized (lock)
                         {
@@ -242,7 +253,13 @@ public class ClientHandler implements Runnable
                             NACK();
                         } catch (IOException e)
                         {
-                            throw new RuntimeException(e);
+                            if (clientSocket.isConnected())
+                            {
+                                closeEverything(clientSocket, in, out, questionOut);
+                                //System.out.println("Closing here");
+
+                            }
+                            break;
                         }
                         synchronized (lock)
                         {
@@ -256,7 +273,13 @@ public class ClientHandler implements Runnable
                                     //System.out.println("waiting");
                                 } catch (InterruptedException e)
                                 {
-                                    throw new RuntimeException(e);
+                                    if (clientSocket.isConnected())
+                                    {
+                                        closeEverything(clientSocket, in, out, questionOut);
+                                        //System.out.println("Closing here2");
+
+                                    }
+                                    break;
                                 }
                             }
                         }
@@ -267,6 +290,41 @@ public class ClientHandler implements Runnable
         }
 
         //Need to send who won
+    }
+
+    public void closeEverything(Socket clientSocket, DataInputStream in, DataOutputStream out, ObjectOutputStream questionOut)
+    {
+        //System.out.println("Close");
+        if (!closeBool)
+        {
+            try
+            {
+                if (clientSocket != null)
+                {
+                    clientSocket.close();
+                }
+                if (in != null)
+                {
+                    in.close();
+                }
+                if (out != null)
+                {
+                    out.close();
+                }
+                if (questionOut != null)
+                {
+                    questionOut.close();
+                }
+                Server.removeClient(this);
+                closeBool = true;
+        } catch (IOException e)
+            {
+                throw new RuntimeException(e);
+            }
+
+        }
+
+
     }
 
     public String[] toStringArray(String path) throws FileNotFoundException
@@ -318,7 +376,11 @@ public class ClientHandler implements Runnable
             //System.out.println(answer);
         } catch (IOException e)
         {
-            clientSocket.close();
+            if (clientSocket.isConnected())
+            {
+                closeEverything(clientSocket, in, out, questionOut);
+                //System.out.println("Closing here");
+            }
         }
 
         questionProgress = GameState.SENDING;
@@ -346,7 +408,12 @@ public class ClientHandler implements Runnable
 
         } catch (IOException e)
         {
-            clientSocket.close();
+            if (clientSocket.isConnected())
+            {
+                closeEverything(clientSocket, in, out, questionOut);
+                //System.out.println("Closing here");
+
+            }
         }
         questionProgress = GameState.SENDING;
     }

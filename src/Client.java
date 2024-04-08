@@ -29,7 +29,11 @@ public class Client implements Runnable
     private static boolean change;
 
     private int userScore;
-    
+
+    private String received;
+
+    private boolean duration;
+
     
 
     public static boolean isChange() {
@@ -52,10 +56,11 @@ public class Client implements Runnable
     {
         this.userName = userName;
         userScore = 0;
+        duration = false;
         try
         {
             String serverIP = getUserInput("Enter the server IP address:");
-            socket = new Socket(serverIP, 5000);
+            socket = new Socket("localhost", 5000);
             System.out.println("Connected");
 
             //Initialize TCP Input Outputs
@@ -138,16 +143,23 @@ public class Client implements Runnable
 
                 //System.out.println(question[0]);
                 change = true;
+                if (change && !duration)
+                {
+                    duration = true;
+                }
+
 
                 //System.out.println("Got it");
                 //System.out.println(change);
 
-                String received = input.readUTF();
+                received = input.readUTF();
+                String ack = received;
                 System.out.println(received);
 
                 //If they are the first to poll they can receive more information
-                if (received.equalsIgnoreCase("You were first"))
+                if (ack.equalsIgnoreCase("You were first"))
                 {
+                    ack = "done";
                     String response = input.readUTF();
                     if (response.equalsIgnoreCase("Correct"))
                     {
@@ -162,13 +174,7 @@ public class Client implements Runnable
 
             } catch (IOException e)
             {
-                try
-                {
-                    socket.close();
-                } catch (IOException ex)
-                {
-                    throw new RuntimeException(ex);
-                }
+                //closeEverything(socket, input, output);
                 break;
             } catch (ClassNotFoundException e)
             {
@@ -176,6 +182,52 @@ public class Client implements Runnable
             }
         }
         //System.out.println("Right after while");
+    }
+
+    public synchronized String returnACK()
+    {
+        try
+        {
+            wait(500);
+
+        } catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        if (received.equalsIgnoreCase("You were first"))
+        {
+            //System.out.println(received);
+            return received;
+        } else return "Nothing";
+    }
+
+    public void closeEverything(Socket clientSocket, DataInputStream in, DataOutputStream out)
+    {
+        try
+        {
+            if (clientSocket != null)
+            {
+                clientSocket.close();
+            }
+            if (in != null)
+            {
+                in.close();
+            }
+            if (out != null)
+            {
+                out.close();
+            }
+        } catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public boolean returnChange()
+    {
+        return duration;
     }
 
     private static String getUserInput(String prompt) throws IOException {
