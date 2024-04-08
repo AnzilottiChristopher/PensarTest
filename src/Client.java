@@ -31,6 +31,8 @@ public class Client implements Runnable
     private int userScore;
 
     private String received;
+
+    private boolean duration;
     
     
 
@@ -54,6 +56,7 @@ public class Client implements Runnable
     {
         this.userName = userName;
         userScore = 0;
+        duration = false;
         try
         {
             socket = new Socket("localhost", 5000);
@@ -139,6 +142,11 @@ public class Client implements Runnable
 
                 //System.out.println(question[0]);
                 change = true;
+                if (change && !duration)
+                {
+                    duration = true;
+                }
+
 
                 //System.out.println("Got it");
                 //System.out.println(change);
@@ -214,6 +222,11 @@ public class Client implements Runnable
             throw new RuntimeException(e);
         }
 
+    }
+
+    public boolean returnChange()
+    {
+        return duration;
     }
 
     public int returnScore()

@@ -257,6 +257,12 @@ public class ClientWindow implements ActionListener
 		{
 			this.duration = duration;
 		}
+
+		public void resetDuration()
+		{
+			this.duration = 30;
+		}
+
 		@Override
 		public void run()
 		{
@@ -297,6 +303,7 @@ public class ClientWindow implements ActionListener
 			if (!Question && !buzzing)
 			{
 				timer.setText("Other Person is answering");
+				window.repaint();
 			}
 			if(duration < 0)
 			{
@@ -319,12 +326,14 @@ public class ClientWindow implements ActionListener
 		}
 	}
 
-	public synchronized void  buzzTrue()
+	public synchronized void buzzTrue()
 	{
 		buzzing = true;
 		Question = false;
 
 	}
+
+
 
 	public synchronized void questionTrue()
 	{
