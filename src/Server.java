@@ -26,12 +26,14 @@ public class Server implements Runnable
 
     private static final String KILL_MSG = "Kill Switch";
 
+    private static int finalScore = 0;
+
     public Server(int portNum)
     {
         this.portNum = portNum;
         //counter = 0;
         numClients = 0;
-        questionNumber = 1;
+        questionNumber = 19;
         this.clientHandlers = new ArrayList<>();
         state = GameState.RUNNING;
         try
@@ -97,7 +99,24 @@ public class Server implements Runnable
 
     public static void endGame()
     {
+        //System.out.println("In endgame");
+        finalScore = -500;
         state = GameState.END;
+        for(ClientHandler clientHandler : clientHandlers)
+        {
+            finalScore = clientHandler.returnScore();
+            if (clientHandler.returnScore() > finalScore)
+            {
+                //System.out.println("in if");
+                finalScore = clientHandler.returnScore();
+                //System.out.println(finalScore);
+            }
+        }
+    }
+
+    public static int returnFinalScore()
+    {
+        return finalScore;
     }
 
     public static synchronized void removeClient(ClientHandler clientHandler) {

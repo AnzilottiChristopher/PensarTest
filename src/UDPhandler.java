@@ -33,7 +33,7 @@ public class UDPhandler implements Runnable
     {
         buffer = new byte[256];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-        while(Server.returnState() == GameState.RUNNING)
+        while(Server.returnState() == GameState.RUNNING && socketUDP != null)
         {
             try
             {
@@ -44,8 +44,22 @@ public class UDPhandler implements Runnable
 
             } catch (IOException e)
             {
-                throw new RuntimeException(e);
+                closeEverything();
             }
+        }
+    }
+
+    public void closeEverything()
+    {
+        try
+        {
+            if (socketUDP != null)
+            {
+                socketUDP.close();
+            }
+        } catch (Exception e)
+        {
+            throw new RuntimeException(e);
         }
     }
 

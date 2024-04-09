@@ -38,6 +38,8 @@ public class ClientWindow implements ActionListener
 	private boolean pollPressed = false;
 	private boolean submitPressed = false;
 
+	private boolean nextQuestionPressed = false;
+
 	private String[] option = new String[4];
 
 	Client client;
@@ -78,7 +80,7 @@ public class ClientWindow implements ActionListener
 		question = new JLabel("Q1. This is a sample question"); // represents the question
 		window.add(question);
 
-		question.setBounds(10, 5, 350, 100);;
+		question.setBounds(10, 5, 500, 100);;
 		
 		options = new JRadioButton[4];
 		optionGroup = new ButtonGroup();
@@ -127,8 +129,8 @@ public class ClientWindow implements ActionListener
 		window.add(submit);
 		
 		
-		window.setSize(400,400);
-		window.setBounds(50, 50, 400, 400);
+		window.setSize(600,600);
+		window.setBounds(50, 50, 600, 600);
 		window.setLayout(null);
 		window.setLocationRelativeTo(null);
 		
@@ -355,6 +357,9 @@ public class ClientWindow implements ActionListener
 		option[1] = option2;
 		option[2] = option3;
 		option[3] = option4;
+		Client.setChange(false);
+		nextQuestionPressed = true;
+		//System.out.println("Updated Question Pressed");
 	}
 
 	public void pollEnabled(boolean checkPoll){

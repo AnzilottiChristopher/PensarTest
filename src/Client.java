@@ -32,6 +32,7 @@ public class Client implements Runnable
 
     private String received;
 
+    private int questionCounter;
     private boolean duration;
 
     
@@ -57,6 +58,7 @@ public class Client implements Runnable
         this.userName = userName;
         userScore = 0;
         duration = false;
+        questionCounter = 19;
         try
         {
             String serverIP = getUserInput("Enter the server IP address:");
@@ -110,7 +112,7 @@ public class Client implements Runnable
                 System.out.println("Selected answer: " + answer);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            closeEverything(socket, input, output);
         }
     }
 
@@ -138,8 +140,23 @@ public class Client implements Runnable
                     clientID = input.readUTF();
                 }
 
+                if (questionCounter == 21)
+                {
+                    System.out.println("In here");
+                    //System.out.println(questionCounter);
+                    String message = input.readUTF();
+                    System.out.println(message);
+                    closeEverything(socket, input, output);
+                    break;
+                }
+
                 //System.out.println("right before");
                 question = (String[]) questionInput.readObject();
+                questionCounter++;
+
+                System.out.println(questionCounter);
+
+
 
                 //System.out.println(question[0]);
                 change = true;
@@ -174,7 +191,7 @@ public class Client implements Runnable
 
             } catch (IOException e)
             {
-                //closeEverything(socket, input, output);
+                closeEverything(socket, input, output);
                 break;
             } catch (ClassNotFoundException e)
             {
