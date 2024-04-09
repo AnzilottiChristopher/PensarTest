@@ -93,6 +93,7 @@ public class ClientWindow implements ActionListener
 			window.add(options[index]);
 			optionGroup.add(options[index]);
 		}
+		options[0].setSelected(true);
 		timer = new JLabel("TIMER");  // represents the countdown shown on the window
 		timer.setBounds(250, 250, 100, 20);
 		clock = new TimerCode(30);  // represents clocked task that should run after X seconds

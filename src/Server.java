@@ -33,7 +33,7 @@ public class Server implements Runnable
         this.portNum = portNum;
         //counter = 0;
         numClients = 0;
-        questionNumber = 19;
+        questionNumber = 1;
         this.clientHandlers = new ArrayList<>();
         state = GameState.RUNNING;
         try
@@ -59,12 +59,14 @@ public class Server implements Runnable
         try
         {
             //While the game is in the state running accept new players
-            while(state == GameState.RUNNING)
+            while(state == GameState.RUNNING && questionNumber < 21)
             {
                 //Accepts new connections
                 Socket clientSocket = null;
-                clientSocket = socket.accept();
-
+                if (questionNumber < 21)
+                {
+                    clientSocket = socket.accept();
+                }
 
                 if (clientSocket != null)
                 {
@@ -81,6 +83,14 @@ public class Server implements Runnable
 
 
             }
+        } catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        try
+        {
+            socket.close();
         } catch (IOException e)
         {
             throw new RuntimeException(e);

@@ -58,11 +58,11 @@ public class Client implements Runnable
         this.userName = userName;
         userScore = 0;
         duration = false;
-        questionCounter = 19;
+        questionCounter = 1;
         try
         {
             String serverIP = getUserInput("Enter the server IP address:");
-            socket = new Socket("localhost", 5000);
+            socket = new Socket(serverIP, 5000);
             System.out.println("Connected");
 
             //Initialize TCP Input Outputs
