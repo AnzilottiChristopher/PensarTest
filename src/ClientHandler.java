@@ -103,6 +103,7 @@ public class ClientHandler implements Runnable
             {
                 try
                 {
+                    //System.out.println("In loop");
                     String filePath = "Hello";
                     //This can be used to send tcp data
                     //System.out.println("TCP Test");
@@ -189,6 +190,8 @@ public class ClientHandler implements Runnable
                             filePath = "Questions/Question 20.txt";
                             answer = 4;
                             break;
+                        default:
+                            filePath = "Nothing";
                     }
 //                    if(!filePath.equals("Hello"))
 //                    {
@@ -196,10 +199,14 @@ public class ClientHandler implements Runnable
 //                    }
 
                    // System.out.println(Server.returnQuestionNumber()); //Why is this constantly running
-                    String[] question = toStringArray(filePath);
+                    if (!filePath.equalsIgnoreCase("Nothing"))
+                    {
+                        String[] question = toStringArray(filePath);
+                        questionOut.writeObject(question);
+                        questionOut.flush();
+                    }
 
-                    questionOut.writeObject(question);
-                    questionOut.flush();
+
 
                     //out.writeUTF("This is testing");
 
@@ -289,7 +296,60 @@ public class ClientHandler implements Runnable
             }
         }
 
+//        System.out.println("Score is:");
+//        System.out.println(score);
+
+        Boolean waiting = false;
+
+        synchronized (waiting)
+        {
+            try
+            {
+                waiting.wait(300);
+            } catch (InterruptedException e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+
         //Need to send who won
+        if (Server.returnFinalScore() == score)
+        {
+            //System.out.println("In Winner");
+            sendWinner();
+        } else if (Server.returnFinalScore() != score)
+        {
+            //System.out.println("In Loser");
+            sendLoser();
+        }
+    }
+
+    public int returnScore()
+    {
+        return score;
+    }
+
+    public void sendWinner()
+    {
+        try
+        {
+            out.writeUTF("You are the winner");
+            out.flush();
+        } catch (IOException e)
+        {
+            closeEverything(clientSocket, in, out, questionOut);
+        }
+    }
+    public void sendLoser()
+    {
+        try
+        {
+            out.writeUTF("You did not win");
+            out.flush();
+        } catch (IOException e)
+        {
+            closeEverything(clientSocket, in, out, questionOut);
+        }
     }
 
     public void closeEverything(Socket clientSocket, DataInputStream in, DataOutputStream out, ObjectOutputStream questionOut)
@@ -316,6 +376,7 @@ public class ClientHandler implements Runnable
                     questionOut.close();
                 }
                 Server.removeClient(this);
+                handler.closeEverything();
                 closeBool = true;
         } catch (IOException e)
             {
@@ -372,7 +433,10 @@ public class ClientHandler implements Runnable
                 out.flush();
             }
 
-            Server.switchQuestion();
+            if (Server.returnQuestionNumber() != 21)
+            {
+                Server.switchQuestion();
+            }
             //System.out.println(answer);
         } catch (IOException e)
         {

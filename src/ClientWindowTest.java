@@ -1,12 +1,10 @@
-import java.util.Timer;
-
 public class ClientWindowTest
 {
 	public static void main(String[] args)
 	{
 		ClientWindow window = new ClientWindow();
 
-		while (true)
+		while (window.returnSocket().isConnected())
 		{
 			if (Client.isChange())
 			{
@@ -18,6 +16,7 @@ public class ClientWindowTest
 				String option4 = nextQuestion[4];
 				window.updateQuestionText(question, option1, option2, option3, option4);
 				Client.setChange(false);
+				//System.out.println("In true loop");
 
 			}
 

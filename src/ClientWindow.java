@@ -3,6 +3,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.net.Socket;
 import java.security.SecureRandom;
 import java.util.TimerTask;
 import java.util.Timer;
@@ -37,6 +40,8 @@ public class ClientWindow implements ActionListener
 
 	private boolean pollPressed = false;
 	private boolean submitPressed = false;
+
+	private boolean nextQuestionPressed = false;
 
 	private String[] option = new String[4];
 
@@ -78,7 +83,7 @@ public class ClientWindow implements ActionListener
 		question = new JLabel("Q1. This is a sample question"); // represents the question
 		window.add(question);
 
-		question.setBounds(10, 5, 350, 100);;
+		question.setBounds(10, 5, 500, 100);;
 		
 		options = new JRadioButton[4];
 		optionGroup = new ButtonGroup();
@@ -91,6 +96,7 @@ public class ClientWindow implements ActionListener
 			window.add(options[index]);
 			optionGroup.add(options[index]);
 		}
+		options[0].setSelected(true);
 		timer = new JLabel("TIMER");  // represents the countdown shown on the window
 		timer.setBounds(250, 250, 100, 20);
 		clock = new TimerCode(30);  // represents clocked task that should run after X seconds
@@ -127,12 +133,26 @@ public class ClientWindow implements ActionListener
 		window.add(submit);
 		
 		
-		window.setSize(400,400);
-		window.setBounds(50, 50, 400, 400);
+		window.setSize(600,600);
+		window.setBounds(50, 50, 600, 600);
 		window.setLayout(null);
 		window.setLocationRelativeTo(null);
-		
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+
+		window.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int choice = JOptionPane.showConfirmDialog(window, "Are you sure you want to exit?", "Confirm Exit", JOptionPane.YES_NO_OPTION);
+				if (choice == JOptionPane.YES_OPTION) {
+					client.closeEverything();
+					window.dispose(); // Close the frame
+				}
+			}
+		});
+
+
 		window.setResizable(false);
 	}
 	// this method is called when you check/uncheck any radio button
@@ -248,6 +268,12 @@ public class ClientWindow implements ActionListener
 		*/
 		
 	}
+
+	public Socket returnSocket()
+	{
+		return client.returnSocket();
+	}
+
 	
 	// this class is responsible for running the timer on the window
 	public class TimerCode extends TimerTask
@@ -355,6 +381,9 @@ public class ClientWindow implements ActionListener
 		option[1] = option2;
 		option[2] = option3;
 		option[3] = option4;
+		Client.setChange(false);
+		nextQuestionPressed = true;
+		//System.out.println("Updated Question Pressed");
 	}
 
 	public void pollEnabled(boolean checkPoll){
