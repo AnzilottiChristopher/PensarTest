@@ -112,7 +112,7 @@ public class Client implements Runnable
                 System.out.println("Selected answer: " + answer);
             }
         } catch (IOException e) {
-            closeEverything(socket, input, output);
+            closeEverything();
         }
     }
 
@@ -146,7 +146,7 @@ public class Client implements Runnable
                     //System.out.println(questionCounter);
                     String message = input.readUTF();
                     System.out.println(message);
-                    closeEverything(socket, input, output);
+                    closeEverything();
                     break;
                 }
 
@@ -191,7 +191,7 @@ public class Client implements Runnable
 
             } catch (IOException e)
             {
-                closeEverything(socket, input, output);
+                closeEverything();
                 break;
             } catch (ClassNotFoundException e)
             {
@@ -200,6 +200,12 @@ public class Client implements Runnable
         }
         //System.out.println("Right after while");
     }
+
+    public Socket returnSocket()
+    {
+        return socket;
+    }
+
 
     public synchronized String returnACK()
     {
@@ -219,21 +225,21 @@ public class Client implements Runnable
         } else return "Nothing";
     }
 
-    public void closeEverything(Socket clientSocket, DataInputStream in, DataOutputStream out)
+    public synchronized void closeEverything()
     {
         try
         {
-            if (clientSocket != null)
+            if (socket != null)
             {
-                clientSocket.close();
+                socket.close();
             }
-            if (in != null)
+            if (input != null)
             {
-                in.close();
+                input.close();
             }
-            if (out != null)
+            if (output != null)
             {
-                out.close();
+                output.close();
             }
         } catch (IOException e)
         {

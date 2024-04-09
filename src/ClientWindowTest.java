@@ -4,7 +4,7 @@ public class ClientWindowTest
 	{
 		ClientWindow window = new ClientWindow();
 
-		while (true)
+		while (window.returnSocket().isConnected())
 		{
 			if (Client.isChange())
 			{

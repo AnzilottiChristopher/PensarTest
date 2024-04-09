@@ -3,6 +3,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.net.Socket;
 import java.security.SecureRandom;
 import java.util.TimerTask;
 import java.util.Timer;
@@ -134,8 +137,22 @@ public class ClientWindow implements ActionListener
 		window.setBounds(50, 50, 600, 600);
 		window.setLayout(null);
 		window.setLocationRelativeTo(null);
-		
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+
+		window.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int choice = JOptionPane.showConfirmDialog(window, "Are you sure you want to exit?", "Confirm Exit", JOptionPane.YES_NO_OPTION);
+				if (choice == JOptionPane.YES_OPTION) {
+					client.closeEverything();
+					window.dispose(); // Close the frame
+				}
+			}
+		});
+
+
 		window.setResizable(false);
 	}
 	// this method is called when you check/uncheck any radio button
@@ -251,6 +268,12 @@ public class ClientWindow implements ActionListener
 		*/
 		
 	}
+
+	public Socket returnSocket()
+	{
+		return client.returnSocket();
+	}
+
 	
 	// this class is responsible for running the timer on the window
 	public class TimerCode extends TimerTask
