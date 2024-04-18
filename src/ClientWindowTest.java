@@ -17,7 +17,6 @@ public class ClientWindowTest
 				window.updateQuestionText(question, option1, option2, option3, option4);
 				Client.setChange(false);
 				//System.out.println("In true loop");
-
 			}
 
 }

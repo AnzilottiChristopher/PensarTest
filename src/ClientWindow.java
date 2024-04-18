@@ -23,6 +23,7 @@ public class ClientWindow implements ActionListener
 	private TimerTask clock;
 	private JTextField user;
 	private JLabel scoreText;
+	private JLabel acknowledged;
 	
 	private JFrame window;
 	private JFrame username;
@@ -45,8 +46,10 @@ public class ClientWindow implements ActionListener
 
 	private String[] option = new String[4];
 
+	private int duration;
+
 	Client client;
-	
+
 	public JTextField getUser() {
 		return user;
 	}
@@ -96,7 +99,10 @@ public class ClientWindow implements ActionListener
 			window.add(options[index]);
 			optionGroup.add(options[index]);
 		}
-		options[0].setSelected(true);
+		options[0].setSelected(false);
+		options[1].setSelected(false);
+		options[2].setSelected(false);
+		options[3].setSelected(false);
 		timer = new JLabel("TIMER");  // represents the countdown shown on the window
 		timer.setBounds(250, 250, 100, 20);
 		clock = new TimerCode(30);  // represents clocked task that should run after X seconds
@@ -139,6 +145,11 @@ public class ClientWindow implements ActionListener
 		window.setLocationRelativeTo(null);
 
 		window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+
+		acknowledged = new JLabel("Press Poll to buzz in!");
+		acknowledged.setBounds(10, 25, 500, 100);
+		window.add(acknowledged);
 
 
 		window.addWindowListener(new WindowAdapter() {
@@ -294,17 +305,23 @@ public class ClientWindow implements ActionListener
 		{
 			if (pollPressed)
 			{
+				options[0].setSelected(false);
+				options[1].setSelected(false);
+				options[2].setSelected(false);
+				options[3].setSelected(false);
 				//System.out.println(client.returnACK());
 				if (client.returnACK().equalsIgnoreCase("You were First"))
 				{
 					//System.out.println("Here in First");
 					buzzTrue();
+					acknowledged.setText("You were first! Click your answer and click submit.");
 				}
 				else
 				{
 					//System.out.println("here");
 					Question = false;
 					buzzing = false;
+					acknowledged.setText("You were not first. Wait for next question and click Poll to try again.");
 				}
 				pollPressed = false;
 			}
@@ -334,7 +351,7 @@ public class ClientWindow implements ActionListener
 			if(duration < 0)
 			{
 				timer.setText("Timer expired");
-				poll.setEnabled(false);
+				//poll.setEnabled(false);
 				window.repaint();
 				//this.cancel();  // cancel the timed task
 				return;
@@ -356,7 +373,6 @@ public class ClientWindow implements ActionListener
 	{
 		buzzing = true;
 		Question = false;
-
 	}
 
 
@@ -370,6 +386,7 @@ public class ClientWindow implements ActionListener
 	public void updateQuestionText(String nextQuestion, String option1, String option2, String option3, String option4)
 	{
 		question.setText(nextQuestion);
+		this.duration = 30;
 		options[0].setText(option1);
 		options[1].setText(option2);
 		options[2].setText(option3);
@@ -394,11 +411,16 @@ public class ClientWindow implements ActionListener
 		}
 	}
 
-	public void submitEnabled(boolean checkSubmit){
+	public boolean submitEnabled(boolean checkSubmit){
 		if (checkSubmit){
 			submit.setEnabled(true);
 		} else {
 			submit.setEnabled(false);
 		}
+		return checkSubmit;
+	}
+
+	public void resetTime(){
+		duration = 30;
 	}
 }
