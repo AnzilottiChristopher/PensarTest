@@ -329,6 +329,7 @@ public class ClientWindow implements ActionListener
 			{
 				questionTrue();
 				submitPressed = false;
+				acknowledged.setText("Press Poll to buzz in!");
 			}
 			if (Question)
 			{
