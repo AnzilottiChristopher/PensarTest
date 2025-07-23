@@ -75,11 +75,12 @@ public class Server implements Runnable
                     //System.out.println(clientID);
                     ClientHandler clientHandler = new ClientHandler(clientSocket, handler, clientID);
                     executorService.execute(clientHandler);
-                    clientHandlers.add(clientHandler);
+                    synchronized(Server.class) {
+                        clientHandlers.add(clientHandler);
+                    }
                     //counter++;
                     numClients++;
                 }
-
 
 
             }
