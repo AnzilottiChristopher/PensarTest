@@ -13,6 +13,7 @@ public class UDPhandler implements Runnable
     private DatagramSocket socketUDP;
     private byte[] buffer;
 
+    private static final int MAX_QUEUE_SIZE = 1000; // Define a max size for the queue
     private static Queue<String> queue = new LinkedList<>();
 
     public UDPhandler()
@@ -65,9 +66,13 @@ public class UDPhandler implements Runnable
 
     public synchronized void addQueue(String received)
     {
-        queue.add(received);
-        System.out.println(queue.peek());
-
+        if(queue.size() < MAX_QUEUE_SIZE) {
+            queue.add(received);
+            System.out.println(queue.peek());
+        } else {
+            // Queue is full, drop the message or handle overflow
+            System.out.println("Queue is full, dropping incoming UDP message.");
+        }
     }
 
     public synchronized void clearQueue()
