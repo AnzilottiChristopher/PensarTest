@@ -31,22 +31,38 @@ public class Client implements Runnable
 
     private int userScore;
 
-    private String received;
 
     private int questionCounter;
     private boolean duration;
 
-    
+    // Custom ObjectInputStream to restrict deserialization to allowed classes
+    private static class SafeObjectInputStream extends ObjectInputStream {
+        public SafeObjectInputStream(InputStream in) throws IOException {
+            super(in);
+        }
+
+        @Override
+        protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+            String className = desc.getName();
+            // Only allow deserialization of String[] class
+            if ("[Ljava.lang.String;".equals(className)) {
+                return super.resolveClass(desc);
+            } else {
+                throw new InvalidClassException("Unauthorized deserialization attempt", className);
+            }
+        }
+    }
 
     public static boolean isChange() {
         return change;
     }
 
     public static void setChange(boolean change) {
-        change = change;
+        Client.change = change;
     }
 
     public static String[] getQuestion() {
+        return question;
         return question;
     }
 
@@ -64,19 +80,16 @@ public class Client implements Runnable
         {
             String serverIP = getUserInput("Enter the server IP address:");
             SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-            socket = (SSLSocket) factory.createSocket(serverIP, 5000);
-            System.out.println("Connected");
 
             //Initialize TCP Input Outputs
             input = new DataInputStream(socket.getInputStream());
             output = new DataOutputStream(socket.getOutputStream());
-            questionInput = new ObjectInputStream(socket.getInputStream());
-
-            //question = new String[5];
+            questionInput = new SafeObjectInputStream(socket.getInputStream());
 
             //UDP
             this.buzzer = new DatagramSocket();
 
+        } catch (UnknownHostException e)
         } catch (UnknownHostException e)
         {
             throw new RuntimeException(e);
@@ -86,46 +99,30 @@ public class Client implements Runnable
         }
     }
 
-     public void sendUsername() {
         try {
             InetAddress serverAddress = socket.getInetAddress(); 
             int serverPort = 5000;
             buffer = clientID.getBytes(StandardCharsets.UTF_8);
-            //System.out.println(clientID);
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, serverAddress, serverPort);
             buzzer.send(packet);
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+            ex.printStackTrace();
     }
 
     public void submitButton(int answer, boolean isSubmit){
         try {
-//            InetAddress serverAddress = socket.getInetAddress();
-//            int serverPort = 5000;
             if (isSubmit == true){
                 System.out.println("Final answer: " + answer);
-//                socket = new Socket(serverAddress, serverPort);
-//                output = new DataOutputStream(socket.getOutputStream());
                 output.writeInt(answer);
                 output.flush();
             } else {
                 System.out.println("Selected answer: " + answer);
+                System.out.println("Selected answer: " + answer);
             }
-        } catch (IOException e) {
             closeEverything();
         }
     }
-
-    // public void selectedAnswer(int answer) {
-    //     try {
-    //         output.writeInt(answer);
-    //         output.flush();
-    //         System.out.println("Selected answer: " + answer);
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
 
     @Override
     public void run()
@@ -135,7 +132,6 @@ public class Client implements Runnable
             try
             {
                 //Receiving ID
-                //System.out.println("here again");
                 if (clientID == null)
                 {
                     clientID = input.readUTF();
@@ -144,30 +140,22 @@ public class Client implements Runnable
                 if (questionCounter == 21)
                 {
                     System.out.println("In here");
-                    //System.out.println(questionCounter);
                     String message = input.readUTF();
                     System.out.println(message);
                     closeEverything();
                     break;
                 }
 
-                //System.out.println("right before");
                 question = (String[]) questionInput.readObject();
                 questionCounter++;
 
                 System.out.println(questionCounter);
 
-
-                //System.out.println(question[0]);
                 change = true;
                 if (change && !duration)
                 {
                     duration = true;
                 }
-
-
-                //System.out.println("Got it");
-                //System.out.println(change);
 
                 received = input.readUTF();
                 String ack = received;
@@ -188,7 +176,6 @@ public class Client implements Runnable
                     System.out.println(response);
                 }
 
-
             } catch (IOException e)
             {
                 closeEverything();
@@ -198,10 +185,9 @@ public class Client implements Runnable
                 throw new RuntimeException(e);
             }
         }
-        //System.out.println("Right after while");
     }
 
-    public SSLSocket returnSocket()
+    public Socket returnSocket()
     {
         return socket;
     }
@@ -220,7 +206,6 @@ public class Client implements Runnable
 
         if (received.equalsIgnoreCase("You were first"))
         {
-            //System.out.println(received);
             return received;
         } else return "Nothing";
     }
