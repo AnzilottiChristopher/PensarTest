@@ -77,8 +77,6 @@ public class Server implements Runnable
                     executorService.execute(clientHandler);
                     synchronized(Server.class) {
                         clientHandlers.add(clientHandler);
-                    }
-                    //counter++;
                     numClients++;
                 }
 
@@ -86,6 +84,7 @@ public class Server implements Runnable
             }
         } catch (IOException e)
         {
+            throw new RuntimeException(e);
             throw new RuntimeException(e);
         }
 
@@ -183,11 +182,17 @@ public class Server implements Runnable
             //System.out.println(returnQuestionNumber());
             if (returnQuestionNumber() == 21)
             {
-                //System.out.println("End game1");
 
                 endGame();
                 //System.out.println("End game2");
             }
+            try {
+                Thread.sleep(100); // Add sleep to prevent busy-wait CPU exhaustion
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            }
         }
     }
+}
 }
