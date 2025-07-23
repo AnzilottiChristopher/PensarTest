@@ -15,7 +15,6 @@ public class ClientHandler implements Runnable
 
 
 
-
     //UDP
 //    private DatagramSocket socketUDP;
 //    private byte[] buffer;
@@ -29,7 +28,7 @@ public class ClientHandler implements Runnable
 
     private UDPhandler handler;
 
-    private static final Boolean lock = false;
+    private static final Object lock = new Object();
 
     private static boolean waiting = true;
 
