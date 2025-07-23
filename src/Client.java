@@ -2,14 +2,15 @@ import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 
 public class Client implements Runnable
 {
     //TCP Data
-    private Socket socket = null;
+    private SSLSocket socket = null;
     private DataInputStream input = null;
     private DataOutputStream output = null;
     private ObjectInputStream questionInput = null;
@@ -62,7 +63,8 @@ public class Client implements Runnable
         try
         {
             String serverIP = getUserInput("Enter the server IP address:");
-            socket = new Socket(serverIP, 5000);
+            SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+            socket = (SSLSocket) factory.createSocket(serverIP, 5000);
             System.out.println("Connected");
 
             //Initialize TCP Input Outputs
@@ -71,7 +73,6 @@ public class Client implements Runnable
             questionInput = new ObjectInputStream(socket.getInputStream());
 
             //question = new String[5];
-
 
             //UDP
             this.buzzer = new DatagramSocket();
@@ -157,7 +158,6 @@ public class Client implements Runnable
                 System.out.println(questionCounter);
 
 
-
                 //System.out.println(question[0]);
                 change = true;
                 if (change && !duration)
@@ -201,7 +201,7 @@ public class Client implements Runnable
         //System.out.println("Right after while");
     }
 
-    public Socket returnSocket()
+    public SSLSocket returnSocket()
     {
         return socket;
     }
